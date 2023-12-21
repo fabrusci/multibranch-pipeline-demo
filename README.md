@@ -9,3 +9,5 @@ feature 2
 feature 3
 bugfix 1.4
 
+bugfix 2.0
+
