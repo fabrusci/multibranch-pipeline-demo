@@ -14,3 +14,4 @@ bugfix 2.0
 feature 4
 feature 5
 
+bugfix 2
