@@ -19,7 +19,7 @@ environment {
         
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()
+                //cleanWs()
                 sh """
                 echo "Cleaned Up Workspace For Project"
                 """
@@ -39,6 +39,7 @@ environment {
         stage(' Unit Testing') {
             steps {
                 sh """
+                ls
                 echo "Running Unit Tests"
                 """
             }
