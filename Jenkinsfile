@@ -4,7 +4,10 @@ pipeline {
           
             docker { image 'aws-pulumi-tools-image' }
     }
-
+environment {
+        AWS_CRED     = credentials('aws-credential-abruscidemo')
+        
+    }
     options {
         buildDiscarder logRotator( 
                     daysToKeepStr: '16', 
@@ -56,12 +59,9 @@ pipeline {
             steps {
                 sh """
                 echo "Building Artifact"
-                """
-                withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
-                sh """
                 aws sts get-caller-identity
-                   """
-                }
+                """
+                
                 sh """
                 echo "Deploying Code"
                 """
