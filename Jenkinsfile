@@ -2,8 +2,10 @@ pipeline {
 
     agent {
           
-            docker { image 'dadsgarage/dadsgarage:latest' args '-u dadsgarage' }
-    }
+            docker { image 'dadsgarage/dadsgarage:latest' 
+                     args '-u dadsgarage'
+                   }
+          }
 environment {
         AWS_DEFAULT_REGION    = "eu-central-1"
         
