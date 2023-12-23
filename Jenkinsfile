@@ -61,9 +61,6 @@ environment {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: "aws-credential-abruscidemo"]]) {
                
                 sh('env')
-                sh('aws sts get-caller-identity')
-                
-
                 sh """
                 echo "Building Artifact"
                 aws sts get-caller-identity
