@@ -5,7 +5,7 @@ pipeline {
             docker { image 'aws-pulumi-tools-image' }
     }
 environment {
-        AWS_CRED     = credentials('aws-credential-abruscidemo')
+        // AWS_CRED     = credentials('aws-credential-abruscidemo')
         
     }
     options {
@@ -57,6 +57,13 @@ environment {
                 branch 'develop'
             }
             steps {
+
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: "aws-credential-abruscidemo"]]) {
+               
+                sh('env')
+                sh('aws sts get-caller-identity')
+                
+
                 sh """
                 echo "Building Artifact"
                 aws sts get-caller-identity
@@ -65,6 +72,7 @@ environment {
                 sh """
                 echo "Deploying Code"
                 """
+                }
             }
         }
 
