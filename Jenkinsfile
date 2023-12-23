@@ -2,7 +2,7 @@ pipeline {
 
     agent {
           
-            docker { image 'aws-pulumi-tools-image' }
+            docker { image 'dadsgarage/dadsgarage:latest' }
     }
 environment {
         AWS_DEFAULT_REGION    = "eu-central-1"
@@ -40,6 +40,19 @@ environment {
             steps {
                 sh """
                 echo "Running Unit Tests"
+                """
+            }
+        }
+        
+        stage(' Setup tools') {
+            steps {
+                sh """
+                echo "Update asdf"
+                asdf update
+                echo "Install awscli plugin"
+                asdf plugin add awscli
+                asdf install awscli latest
+                asdf reshim awscli
                 """
             }
         }
