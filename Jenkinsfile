@@ -48,6 +48,7 @@ environment {
         stage(' Setup tools') {
             steps {
                 sh """
+                pwd
                 ls
                 echo "Update asdf"
                 asdf update
