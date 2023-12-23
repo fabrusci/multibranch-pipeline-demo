@@ -51,6 +51,7 @@ environment {
             steps {
                 sh """
                 # whoami
+                echo ${HOME}
                 pwd
                 ls -la
                 echo "Update asdf"
