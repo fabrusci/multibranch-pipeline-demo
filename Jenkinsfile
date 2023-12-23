@@ -2,8 +2,8 @@ pipeline {
 
     agent {
           
-            docker { image 'dadsgarage/dadsgarage:latest' 
-                     args    '-u dadsgarage:dadsgarage'
+            docker { image 'aws-pulumi-tools-image:latest' 
+                      //args    '-u dadsgarage:dadsgarage'
                    }
           }
 environment {
@@ -38,7 +38,7 @@ environment {
             }
         }
 
-        stage(' Unit Testing') {
+        stage('Unit Testing') {
             steps {
                 sh """
                 ls
@@ -51,6 +51,12 @@ environment {
             steps {
                 sh """
                 # whoami
+                git clone --branch v0.13.1 --depth 1 https://github.com/asdf-vm/asdf.git "${HOME}/.asdf"
+                echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.bashrc"
+                echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.profile"
+                source "${HOME}/.asdf/asdf.sh"
+                rm -rf /var/tmp/* /tmp/* /var/tmp/.???* /tmp/.???*
+
                 echo ${HOME}
                 pwd
                 ls -la
