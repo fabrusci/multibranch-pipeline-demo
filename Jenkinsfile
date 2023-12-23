@@ -3,7 +3,7 @@ pipeline {
     agent {
           
             docker { image 'dadsgarage/dadsgarage:latest' 
-                     args '-u dadsgarage --privileged'
+                     
                    }
           }
 environment {
@@ -50,9 +50,9 @@ environment {
         stage(' Setup tools') {
             steps {
                 sh """
-                whoami
+                # whoami
                 pwd
-                ls
+                ls -la
                 echo "Update asdf"
                 asdf update
                 echo "Install awscli plugin"
