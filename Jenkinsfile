@@ -2,7 +2,7 @@ pipeline {
 
     agent {
           
-            docker { image 'aws-pulumi-tools-image:latest' 
+            docker { image 'dadsgarage/dadsgarage:latest' 
                      args '-u dadsgarage --privileged'
                    }
           }
