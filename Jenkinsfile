@@ -2,7 +2,7 @@ pipeline {
 
     agent {
           
-            docker { image 'dadsgarage/dadsgarage:latest' 
+            docker { image 'aws-pulumi-tools-image:latest' 
                      
                    }
           }
