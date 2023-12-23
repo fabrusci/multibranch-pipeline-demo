@@ -47,6 +47,7 @@ environment {
         stage(' Setup tools') {
             steps {
                 sh """
+                pwd
                 echo "Update asdf"
                 asdf update
                 echo "Install awscli plugin"
