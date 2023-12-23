@@ -5,7 +5,7 @@ pipeline {
             docker { image 'aws-pulumi-tools-image' }
     }
 environment {
-        // AWS_CRED     = credentials('aws-credential-abruscidemo')
+        AWS_DEFAULT_REGION    = "eu-central-1"
         
     }
     options {
