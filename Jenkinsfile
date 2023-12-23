@@ -3,7 +3,7 @@ pipeline {
     agent {
           
             docker { image 'aws-pulumi-tools-image:latest' 
-                      //args    '-u dadsgarage:dadsgarage'
+                    args    '-u root'
                    }
           }
 environment {
