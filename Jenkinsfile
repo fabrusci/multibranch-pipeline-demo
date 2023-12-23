@@ -3,7 +3,7 @@ pipeline {
     agent {
           
             docker { image 'dadsgarage/dadsgarage:latest' 
-                     
+                     -u dadsgarage:dadsgarage
                    }
           }
 environment {
