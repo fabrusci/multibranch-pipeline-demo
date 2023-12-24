@@ -2,8 +2,8 @@ pipeline {
 
     agent {
           
-            docker { image 'aws-pulumi-tools-image:latest' 
-                    args    '-u root'
+            docker { image 'jenkins-dads-agent:latest' 
+                    //args    '-u root'
                    }
           }
 environment {
@@ -51,11 +51,11 @@ environment {
             steps {
                 sh """
                 whoami
-                git clone --branch v0.13.1 --depth 1 https://github.com/asdf-vm/asdf.git "${HOME}/.asdf"
-                echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.bashrc"
-                echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.profile"
-                source "${HOME}/.asdf/asdf.sh"
-                rm -rf /var/tmp/* /tmp/* /var/tmp/.???* /tmp/.???*
+                #git clone --branch v0.13.1 --depth 1 https://github.com/asdf-vm/asdf.git "${HOME}/.asdf"
+                #echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.bashrc"
+                #echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.profile"
+                #source "${HOME}/.asdf/asdf.sh"
+                #rm -rf /var/tmp/* /tmp/* /var/tmp/.???* /tmp/.???*
 
                 echo ${HOME}
                 pwd
