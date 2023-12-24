@@ -60,6 +60,7 @@ environment {
             steps {
                 sh """
                 #!/bin/bash
+                source /home/jenkins/.bashrc
                 ls -la
                 pwd
                 echo "Update asdf"
