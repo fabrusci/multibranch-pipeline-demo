@@ -8,15 +8,12 @@ pipeline {
           }
 
           parameters {
-        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        string(name: 'AWSCLI_VERSION', defaultValue: 'latest', description: 'AWSCLI Version to install')
 
-        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
-
-        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
-
-        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
-
-        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+        // text(name: 'AWSCLI_VERSION', defaultValue: 'latest', description: 'Enter some information about the person')
+        // booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+        // choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+        //password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
 environment {
         AWS_DEFAULT_REGION    = "eu-central-1"
@@ -68,7 +65,8 @@ environment {
                 echo "Update asdf"
                 asdf update
                 echo "Install awscli plugin"
-                asdf plugin add awscli
+                echo "AWSCLI version : ${AWSCLI_VERSION}"
+                asdf plugin add awscli ${AWSCLI_VERSION}
                 asdf install awscli latest
                 asdf reshim awscli
                 asdf local awscli latest
