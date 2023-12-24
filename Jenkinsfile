@@ -58,26 +58,35 @@ environment {
         
         stage('Setup tools') {
             environment { 
-                PATH = "${env.PATH}:/home/jenkins/.asdf/bin"
-                ASDF_DATA_DIR='/home/jenkins/.asdf'
-                ASDF_DEFAULT_TOOL_VERSIONS_FILENAME='/home/jenkins/.tool-versions'
+                ASDF_PATH = '/home/jenkins/.asdf'
+                ASDF_BIN = "${ASDF_PATH}/bin"
+                ASDF_DATA_DIR = '/home/jenkins/.asdf'
+                ASDF_DEFAULT_TOOL_VERSIONS_FILENAME = '/home/jenkins/.tool-versions'
             }
             steps {               
                 script {
-                def asdfPath = '/home/jenkins/.asdf/asdf.sh'
-                sh """         
-                env
-                ls -la
-                pwd
-                echo "Update asdf"
-                asdf update
-                echo "Install awscli plugin"
-                echo "AWSCLI version : ${AWSCLI_VERSION}"
-                asdf plugin add awscli 
-                asdf install awscli ${AWSCLI_VERSION}
-                asdf local awscli ${AWSCLI_VERSION}
-                asdf reshim awscli
-                """
+                
+                withEnv([
+                        "PATH+ASDF=${ASDF_BIN}",
+                        "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
+                        "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
+                    ]) {
+                        sh """         
+                           env
+                           ls -la
+                           pwd
+                           echo "Update asdf"
+                           asdf update
+                           echo "Install awscli plugin"
+                           echo "AWSCLI version : ${AWSCLI_VERSION}"
+                           asdf plugin add awscli 
+                           asdf install awscli ${AWSCLI_VERSION}
+                           asdf local awscli ${AWSCLI_VERSION}
+                           asdf reshim awscli
+                           """
+                    }
+                       
+                
                 }
             }
         }
