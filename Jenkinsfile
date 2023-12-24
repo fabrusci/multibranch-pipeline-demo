@@ -60,8 +60,7 @@ environment {
             steps {
                 script {
                 def asdfPath = '/home/jenkins/.asdf/asdf.sh'
-                sh """
-                . ${asdfPath}           
+                sh """         
                 export PATH=\$PATH:/home/jenkins/.asdf/bin
                 export ASDF_DATA_DIR=/home/jenkins/.asdf
                 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=/home/jenkins/.tool-versions
