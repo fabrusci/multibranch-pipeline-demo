@@ -62,10 +62,9 @@ environment {
                 def asdfPath = '/home/jenkins/.asdf/asdf.sh'
                 sh """
                 #!/bin/bash            
-                . ${asdfPath}
-                export PATH=\$PATH:/home/jenkins/.asdf/bin"
-                export ASDF_DATA_DIR=/home/jenkins/.asdf"
-                export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=/home/jenkins/.tool-versions"
+                export PATH=\$PATH:${asdfPath}/bin
+                export ASDF_DATA_DIR=/home/jenkins/.asdf
+                export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=/home/jenkins/.tool-versions
                 ls -la
                 pwd
                 echo "Update asdf"
