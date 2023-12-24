@@ -50,6 +50,7 @@ environment {
         stage(' Setup tools') {
             steps {
                 sh """
+                #!/bin/bash
                 #whoami
                 #git clone --branch v0.13.1 --depth 1 https://github.com/asdf-vm/asdf.git "${HOME}/.asdf"
                 #echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.bashrc"
