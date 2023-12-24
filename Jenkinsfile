@@ -56,10 +56,9 @@ environment {
                 #echo -e '\nsource $HOME/.asdf/asdf.sh' >> "${HOME}/.profile"
                 #source "${HOME}/.asdf/asdf.sh"
                 #rm -rf /var/tmp/* /tmp/* /var/tmp/.???* /tmp/.???*
-
-                echo ${HOME}
-                pwd
                 ls -la
+                #echo ${HOME}
+                pwd
                 echo "Update asdf"
                 asdf update
                 echo "Install awscli plugin"
