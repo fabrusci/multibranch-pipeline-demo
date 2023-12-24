@@ -68,6 +68,7 @@ environment {
                 pwd
                 echo "Update asdf"
                 echo $PATH
+                echo $ASDF_DATA_DIR
                 asdf update
                 echo "Install awscli plugin"
                 echo "AWSCLI version : ${AWSCLI_VERSION}"
