@@ -56,13 +56,13 @@ environment {
             }
         }
         
-        stage(' Setup tools') {
+        stage('Setup tools') {
             steps {
                 script {
                 def asdfPath = '/home/jenkins/.asdf/asdf.sh'
                 sh """
                 #!/bin/bash            
-                source ${asdfPath}"
+                . ${asdfPath}
                 export PATH=\$PATH:/home/jenkins/.asdf/bin"
                 export ASDF_DATA_DIR=/home/jenkins/.asdf"
                 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=/home/jenkins/.tool-versions"
