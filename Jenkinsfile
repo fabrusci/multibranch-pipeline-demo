@@ -67,9 +67,9 @@ environment {
                 echo "Install awscli plugin"
                 echo "AWSCLI version : ${AWSCLI_VERSION}"
                 asdf plugin add awscli 
-                asdf install awscli latest ${AWSCLI_VERSION}
+                asdf install awscli ${AWSCLI_VERSION}
+                asdf local awscli ${AWSCLI_VERSION}
                 asdf reshim awscli
-                asdf local awscli latest
                 """
             }
         }
