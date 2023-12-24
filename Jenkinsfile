@@ -58,17 +58,18 @@ environment {
         
         stage('Setup tools') {
             steps {
+                environment { 
+                PATH='$PATH:/home/jenkins/.asdf/bin'
+                ASDF_DATA_DIR='/home/jenkins/.asdf'
+                ASDF_DEFAULT_TOOL_VERSIONS_FILENAME='/home/jenkins/.tool-versions'
+            }
                 script {
                 def asdfPath = '/home/jenkins/.asdf/asdf.sh'
                 sh """         
-                export PATH=$PATH:/home/jenkins/.asdf/bin
-                export ASDF_DATA_DIR=/home/jenkins/.asdf
-                export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=/home/jenkins/.tool-versions
+                env
                 ls -la
                 pwd
                 echo "Update asdf"
-                echo $PATH
-                echo $ASDF_DATA_DIR
                 asdf update
                 echo "Install awscli plugin"
                 echo "AWSCLI version : ${AWSCLI_VERSION}"
