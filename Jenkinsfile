@@ -60,6 +60,7 @@ environment {
                 asdf plugin add awscli
                 asdf install awscli latest
                 asdf reshim awscli
+                asdf local awscli latest
                 """
             }
         }
