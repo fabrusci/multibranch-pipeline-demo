@@ -58,6 +58,7 @@ environment {
         
         stage(' Setup tools') {
             steps {
+                script {
                 def asdfPath = '/home/jenkins/.asdf/asdf.sh'
                 sh """
                 #!/bin/bash            
@@ -76,6 +77,7 @@ environment {
                 asdf local awscli ${AWSCLI_VERSION}
                 asdf reshim awscli
                 """
+                }
             }
         }
 
