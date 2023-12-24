@@ -67,6 +67,7 @@ environment {
                 ls -la
                 pwd
                 echo "Update asdf"
+                echo $PATH
                 asdf update
                 echo "Install awscli plugin"
                 echo "AWSCLI version : ${AWSCLI_VERSION}"
