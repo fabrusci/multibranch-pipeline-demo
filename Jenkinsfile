@@ -2,7 +2,7 @@ pipeline {
 
     agent {
           
-            docker { image 'jenkins-dads-agent:latest' 
+            docker { image 'jenkins/jnlp-slave:latest' 
                     //args    '-u root'
                    }
           }
