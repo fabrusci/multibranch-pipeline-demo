@@ -60,6 +60,7 @@ environment {
         
         stage('Setup tools') {
             environment { 
+                ASDF_DIR = '/home/jenkins/.asdf'
                 ASDF_PATH = '/home/jenkins/.asdf'
                 ASDF_BIN = "${ASDF_PATH}/bin"
                 ASDF_DATA_DIR = '/home/jenkins/.asdf'
@@ -69,6 +70,7 @@ environment {
                 script {
                 
                 withEnv([
+                        "ASDF_DIR=${ASDF_DIR}",
                         "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
                         "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
                     ]) {
