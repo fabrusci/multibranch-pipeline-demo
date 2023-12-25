@@ -67,7 +67,6 @@ environment {
                 script {
                 
                 withEnv([
-                        "PATH+ASDF=${ASDF_BIN}",
                         "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
                         "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
                     ]) {
