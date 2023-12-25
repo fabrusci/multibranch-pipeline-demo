@@ -2,7 +2,7 @@ pipeline {
 
     agent {
           
-            docker { image 'jenkins/jnlp-slave:latest' 
+            docker { image 'jenkins-jnlp-agent:latest' 
                     //args    '-u root'
                    }
           }
@@ -32,6 +32,7 @@ environment {
             steps {
                 //cleanWs()
                 sh """
+                #!/bin/bash
                 echo "Cleaned Up Workspace For Project"
                 """
             }
@@ -50,6 +51,7 @@ environment {
         stage('Unit Testing') {
             steps {
                 sh """
+                #!/bin/bash
                 ls
                 echo "Running Unit Tests"
                 """
@@ -70,7 +72,8 @@ environment {
                         "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
                         "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
                     ]) {
-                        sh """         
+                        sh """
+                           #!/bin/bash        
                            env
                            ls -la
                            pwd
@@ -93,6 +96,7 @@ environment {
         stage('Code Analysis') {
             steps {
                 sh """
+                #!/bin/bash
                 echo "Running Code Analysis"
                 """
             }
@@ -108,11 +112,13 @@ environment {
                
                 sh('env')
                 sh """
+                #!/bin/bash
                 echo "Building Artifact"
                 aws sts get-caller-identity
                 """
                 
                 sh """
+                #!/bin/bash
                 echo "Deploying Code"
                 """
                 }
