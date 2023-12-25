@@ -71,6 +71,8 @@ environment {
                 
                 withEnv([
                         "ASDF_DIR=${ASDF_DIR}",
+                        "ASDF_PATH"=${ASDF_PATH},
+                        "ASDF_BIN"=${ASDF_BIN}
                         "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
                         "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
                     ]) {
