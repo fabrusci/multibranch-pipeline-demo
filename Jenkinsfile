@@ -76,7 +76,7 @@ environment {
                     ]) {
                         sh """
                            #!/bin/bash        
-                           source /home/jenkins/.bashrc
+                           . /home/jenkins/.bashrc
                            env
                            ls -la
                            pwd
