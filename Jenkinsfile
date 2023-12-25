@@ -59,23 +59,11 @@ environment {
         }
         
         stage('Setup tools') {
-            environment { 
-                ASDF_DIR = '/home/jenkins/.asdf'
-                ASDF_PATH = '/home/jenkins/.asdf'
-                ASDF_BIN = "${ASDF_PATH}/bin"
-                ASDF_DATA_DIR = '/home/jenkins/.asdf'
-                ASDF_DEFAULT_TOOL_VERSIONS_FILENAME = '/home/jenkins/.tool-versions'
-            }
+            
             steps {               
                 script {
                 
-                withEnv([
-                        "ASDF_DIR=${ASDF_DIR}",
-                        "ASDF_PATH=${ASDF_PATH}",
-                        "ASDF_BIN=${ASDF_BIN}",
-                        "ASDF_DATA_DIR=${ASDF_DATA_DIR}",
-                        "ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=${ASDF_DEFAULT_TOOL_VERSIONS_FILENAME}"
-                    ]) {
+                
                         sh """
                            #!/bin/bash        
                            env
@@ -90,7 +78,7 @@ environment {
                            asdf local awscli ${AWSCLI_VERSION}
                            asdf reshim awscli
                            """
-                    }
+                    
                        
                 
                 }
