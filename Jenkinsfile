@@ -3,7 +3,7 @@ pipeline {
     agent {
           
             docker { image 'jenkins-jnlp-agent:latest' 
-                     args    '-u 108:117'
+                     args    '-u jenkins'
                    }
           }
 
