@@ -2,8 +2,8 @@ pipeline {
 
     agent {
           
-            docker { image 'jenkins-jnlp-agent:latest' 
-                     args    '-u 1000:1000  --privileged'
+            docker { image 'jenkins-dads-agent:latest' 
+                     // args    '-u 1000:1000  --privileged'
                    }
           }
 
