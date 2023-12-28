@@ -38,15 +38,15 @@ environment {
             }
         }
 
-        stage('Code Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/main']], 
-                    userRemoteConfigs: [[url: 'https://github.com/fabrusci/multibranch-pipeline-demo.git']]
-                ])
-            }
-        }
+        //stage('Code Checkout') {
+        //    steps {
+        //        checkout([
+        //            $class: 'GitSCM', 
+        //            branches: [[name: '*/main']], 
+        //            userRemoteConfigs: [[url: 'https://github.com/fabrusci/multibranch-pipeline-demo.git']]
+        //        ])
+        //    }
+        //}
 
         stage('Unit Testing') {
             steps {
