@@ -65,6 +65,7 @@ environment {
                 
                         sh (
                             script: """#!/bin/bash        
+                                    set -x
                                     env
                                     ls -la
                                     pwd
