@@ -85,14 +85,6 @@ environment {
             }
         }
 
-        stage('Code Analysis') {
-            steps {
-                sh """
-                #!/bin/bash
-                echo "Running Code Analysis"
-                """
-            }
-        }
 
         stage('Build Deploy Code') {
             when {
