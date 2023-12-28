@@ -63,20 +63,21 @@ environment {
                 script {
                 
                 
-                        sh """
-                           #!/bin/bash        
-                           env
-                           ls -la
-                           pwd
-                           echo "Update asdf"
-                           asdf update
-                           echo "Install awscli plugin"
-                           echo "AWSCLI version : ${AWSCLI_VERSION}"
-                           asdf plugin add awscli 
-                           asdf install awscli ${AWSCLI_VERSION}
-                           asdf local awscli ${AWSCLI_VERSION}
-                           asdf reshim awscli
-                           """
+                        sh (
+                            script: """#!/bin/bash        
+                                    env
+                                    ls -la
+                                    pwd
+                                    echo "Update asdf"
+                                    asdf update
+                                    echo "Install awscli plugin"
+                                    echo "AWSCLI version : ${AWSCLI_VERSION}"
+                                    asdf plugin add awscli 
+                                    asdf install awscli ${AWSCLI_VERSION}
+                                    asdf local awscli ${AWSCLI_VERSION}
+                                    asdf reshim awscli
+                                    """
+                           )
                     
                        
                 
