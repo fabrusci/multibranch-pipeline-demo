@@ -28,15 +28,15 @@ environment {
 
     stages {
         
-        stage('Cleanup Workspace') {
-            steps {
-                //cleanWs()
-                sh """
-                #!/bin/bash
-                echo "Cleaned Up Workspace For Project"
-                """
-            }
-        }
+       //stage('Cleanup Workspace') {
+       //    steps {
+       //        //cleanWs()
+       //        sh """
+       //        #!/bin/bash
+       //        echo "Cleaned Up Workspace For Project"
+       //        """
+       //    }
+       //}
 
         //stage('Code Checkout') {
         //    steps {
@@ -48,15 +48,14 @@ environment {
         //    }
         //}
 
-        stage('Unit Testing') {
-            steps {
-                sh """
-                #!/bin/bash
-                ls
-                echo "Running Unit Tests"
-                """
-            }
-        }
+        //stage('Unit Testing') {
+        //    steps {
+        //        sh """#!/bin/bash
+        //        ls
+        //        echo "Running Unit Tests"
+        //        """
+        //    }
+        //}
         
         stage('Setup tools') {
             
