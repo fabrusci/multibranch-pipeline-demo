@@ -15,3 +15,5 @@ feature 4
 feature 5
 
 bugfix 2
+
+modified awscli version
