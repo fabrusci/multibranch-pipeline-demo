@@ -8,7 +8,7 @@ pipeline {
           }
 
           parameters {
-        string(name: 'AWSCLI_VERSION', defaultValue: 'latest', description: 'AWSCLI Version to install')
+        string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
 
         // text(name: 'AWSCLI_VERSION', defaultValue: 'latest', description: 'Enter some information about the person')
         // booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
