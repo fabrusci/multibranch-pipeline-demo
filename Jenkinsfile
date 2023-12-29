@@ -81,10 +81,15 @@ environment {
                                     asdf local terraform 1.4.6
                                     asdf reshim
                                     """
-                           )
-                    
-                       
-                
+                           )               
+                }
+
+                script {               
+                        sh (
+                            script: """#!/bin/bash        
+                                    echo " Second script"
+                                    """
+                           )               
                 }
             }
         }
