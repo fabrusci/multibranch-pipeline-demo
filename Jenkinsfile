@@ -76,7 +76,10 @@ environment {
                                     asdf plugin add awscli 
                                     asdf install awscli ${AWSCLI_VERSION}
                                     asdf local awscli ${AWSCLI_VERSION}
-                                    asdf reshim awscli
+                                    asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+                                    asdf install terraform 1.4.6
+                                    asdf local terraform 1.4.6
+                                    asdf reshim
                                     """
                            )
                     
@@ -98,13 +101,14 @@ environment {
                 sh('env')
                 sh """
                 #!/bin/bash
-                echo "Building Artifact"
+                echo "Check AWS credential"
                 aws sts get-caller-identity
                 """
                 
                 sh """
                 #!/bin/bash
-                echo "Deploying Code"
+                echo "Check terraform version"
+                terraform version
                 """
                 }
             }
