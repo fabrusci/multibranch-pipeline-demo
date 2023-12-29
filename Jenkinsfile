@@ -99,17 +99,18 @@ environment {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: "aws-credential-abruscidemo"]]) {
                
                 sh('env')
-                sh """
-                #!/bin/bash
-                echo "Check AWS credential"
-                aws sts get-caller-identity
-                """
-                
-                sh """
-                #!/bin/bash
-                echo "Check terraform version"
-                terraform version
-                """
+                sh ( 
+                    script: """#!/bin/bash
+                            echo "Check AWS credential"
+                            aws sts get-caller-identity
+                            """
+                    )               
+                sh (
+                    script: """#!/bin/bash
+                            echo "Check terraform version"
+                            terraform version
+                            """
+                    )
                 }
             }
         }
