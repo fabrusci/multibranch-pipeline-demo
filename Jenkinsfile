@@ -64,7 +64,7 @@ environment {
                 
                 
                         sh (
-                            script: """#!/bin/sh        
+                            script: """#!/bin/bash        
                                     set -x
                                     env
                                     ls -la
