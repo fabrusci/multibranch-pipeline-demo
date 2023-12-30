@@ -82,7 +82,8 @@ environment {
                                         ]
                                     ]
                                 ],
-                                string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install')
+                                string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install'),
+                                choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], defaultValue: 'Two', description: 'Pick something')
                             ])
                         ])
                     }
