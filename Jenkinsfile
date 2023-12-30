@@ -82,7 +82,7 @@ environment {
                                         ]
                                     ]
                                 ],
-                                string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
+                                string(name: 'AWSCLI_VERSION' ? params.AWSCLI_VERSION : '2.15.14'  , description: 'AWSCLI Version to install')
                             ])
                         ])
                     }
