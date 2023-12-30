@@ -83,7 +83,7 @@ environment {
                                     ]
                                 ],
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install'),
-                                choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], defaultValue: 'Two', description: 'Pick something')
+                                choice(name: 'CHOICE', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
                             ])
                         ])
                     }
@@ -91,9 +91,9 @@ environment {
             }
         }
         stage('Setup tools') {
-             environment{
-                name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
-            }
+             // environment{
+             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
+             //   }
             steps {               
                 script {
                 
