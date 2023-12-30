@@ -7,9 +7,9 @@ pipeline {
                    }
           }
 
-        //parameters {
-        //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
-        //  }
+        parameters {
+        string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
+          }
 environment {
         AWS_DEFAULT_REGION    = "eu-central-1"
         
@@ -81,8 +81,7 @@ environment {
                                                 "return['dev','stage','prod']"
                                         ]
                                     ]
-                                ],
-                                string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
+                                ]
                             ])
                         ])
                     }
