@@ -57,36 +57,11 @@ environment {
         //    }
         //}
         
-        stage('Setup tools') {
-            
-            steps {               
-                script {
-                
-                
-                        sh (
-                            script: """#!/bin/bash        
-                                    set -x
-                                    env
-                                    ls -la
-                                    pwd
-                                    echo "Update asdf"
-                                    asdf update
-                                    echo "Install awscli plugin"
-                                    echo "AWSCLI version : ${AWSCLI_VERSION}"
-                                    asdf plugin add awscli 
-                                    asdf install awscli ${AWSCLI_VERSION}
-                                    asdf local awscli ${AWSCLI_VERSION}
-                                    asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
-                                    asdf install terraform 1.4.6
-                                    asdf local terraform 1.4.6
-                                    asdf reshim
-                                    """
-                           )               
-                }
-
-                script {
-
-                          properties([
+       stage(name: 'Parameters')
+       
+                steps {
+                    script {
+                    properties([
                             parameters([
                                 [$class: 'ChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
@@ -164,6 +139,41 @@ environment {
                                 ]
                             ])
                         ])
+                    }
+                }
+            
+
+
+
+
+        stage('Setup tools') {
+            
+            steps {               
+                script {
+                
+                
+                        sh (
+                            script: """#!/bin/bash        
+                                    set -x
+                                    env
+                                    ls -la
+                                    pwd
+                                    echo "Update asdf"
+                                    asdf update
+                                    echo "Install awscli plugin"
+                                    echo "AWSCLI version : ${AWSCLI_VERSION}"
+                                    asdf plugin add awscli 
+                                    asdf install awscli ${AWSCLI_VERSION}
+                                    asdf local awscli ${AWSCLI_VERSION}
+                                    asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+                                    asdf install terraform 1.4.6
+                                    asdf local terraform 1.4.6
+                                    asdf reshim
+                                    """
+                           )               
+                }
+
+                script {
 
                         sh (
                             script: """#!/bin/bash        
