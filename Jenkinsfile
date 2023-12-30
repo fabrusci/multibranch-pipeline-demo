@@ -81,7 +81,8 @@ environment {
                                                 "return['dev','stage','prod']"
                                         ]
                                     ]
-                                ]
+                                ],
+                                string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
                             ])
                         ])
                     }
