@@ -89,7 +89,9 @@ environment {
         //    }
         //}
         stage('Setup tools') {
-            
+             environment{
+                name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
+            }
             steps {               
                 script {
                 
