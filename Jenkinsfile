@@ -60,30 +60,30 @@ environment {
                     script {
                     properties([
                             parameters([
-                                [$class: 'ChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the Environemnt from the Dropdown List', 
-                                    filterLength: 1, 
-                                    filterable: false, 
-                                    name: 'Env', 
-                                    script: [
-                                        $class: 'GroovyScript', 
-                                        fallbackScript: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['Could not get The environemnts']"
-                                        ], 
-                                        script: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['dev','stage','prod']"
-                                        ]
-                                    ]
-                                ],
+                                //$class: 'ChoiceParameter', 
+                                //   choiceType: 'PT_SINGLE_SELECT', 
+                                //   description: 'Select the Environemnt from the Dropdown List', 
+                                //   filterLength: 1, 
+                                //   filterable: false, 
+                                //   name: 'Env', 
+                                //   script: [
+                                //       $class: 'GroovyScript', 
+                                //       fallbackScript: [
+                                //           classpath: [], 
+                                //           sandbox: false, 
+                                //           script: 
+                                //               "return['Could not get The environemnts']"
+                                //       ], 
+                                //       script: [
+                                //           classpath: [], 
+                                //           sandbox: false, 
+                                //           script: 
+                                //               "return['dev','stage','prod']"
+                                //       ]
+                                //   ]
+                                //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install'),
-                                choice(name: 'CHOICE', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
+                                choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
                             ])
                         ])
                     }
