@@ -78,7 +78,7 @@ environment {
                                             classpath: [], 
                                             sandbox: false, 
                                             script: 
-                                                "return['dev','stage','prod']"
+                                                "return['dev','stage:selected','prod']"
                                         ]
                                     ]
                                 ],
