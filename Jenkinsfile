@@ -56,10 +56,12 @@ environment {
         //        """
         //    }
         //}
-        
-       stage('Parameters')
-       
-                steps {
+    
+
+        stage('Parameter')
+        {
+            steps{
+                
                     script {
                     properties([
                             parameters([
@@ -140,12 +142,9 @@ environment {
                             ])
                         ])
                     }
-                }
-            
-
-
-
-
+                
+            }
+        }
         stage('Setup tools') {
             
             steps {               
