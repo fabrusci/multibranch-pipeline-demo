@@ -78,7 +78,7 @@ environment {
                                             classpath: [], 
                                             sandbox: false, 
                                             script: 
-                                                "return[${params.Env},'dev','stage','prod']"
+                                                "return['dev','stage','prod']"
                                         ]
                                     ]
                                 ],
