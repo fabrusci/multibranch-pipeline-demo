@@ -53,7 +53,7 @@ environment {
         //}
     
 
-        stage('Parameter')
+        stage('Setup parameters')
         {
             steps{
                 
