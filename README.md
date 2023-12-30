@@ -23,3 +23,4 @@ test persistent params
 new test
 new test choiche
 new test default
+new test
