@@ -17,3 +17,4 @@ feature 5
 bugfix 2
 
 modified awscli version
+test params
