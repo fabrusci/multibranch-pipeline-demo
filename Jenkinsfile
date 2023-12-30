@@ -57,7 +57,7 @@ environment {
         //    }
         //}
         
-       stage(name: 'Parameters')
+       stage('Parameters')
        
                 steps {
                     script {
