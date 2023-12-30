@@ -78,7 +78,7 @@ environment {
                                             classpath: [], 
                                             sandbox: false, 
                                             script: 
-                                                "return[params.Env:selected'dev','stage','prod']"
+                                                "return[params.Env:selected,'dev','stage','prod']"
                                         ]
                                     ]
                                 ],
