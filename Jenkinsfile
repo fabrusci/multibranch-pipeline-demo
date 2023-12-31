@@ -1,7 +1,6 @@
 pipeline {
     agent {
-            any
-            //docker { image 'jenkins-dads-agent:latest'
+            docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
             }
     }
@@ -49,13 +48,8 @@ pipeline {
         //    }
         //}
 
-        stage('Setup parameters')    
+        stage('Setup parameters')
         {
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-                     // args    '-u 1000:1000  --privileged'
-                   }
-            }
             steps {
                     script {
                     properties([
@@ -91,13 +85,6 @@ pipeline {
             }
         }
         stage('Setup tools') {
-
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-                     // args    '-u 1000:1000  --privileged'
-                   }
-            }
-
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
@@ -136,36 +123,7 @@ pipeline {
             }
         }
 
-        stage('Manual Intervention') {
-
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-                     // args    '-u 1000:1000  --privileged'
-                   }
-            }
-            steps {
-                script {
-                    // Pause the pipeline and wait for manual input
-                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-
-                    // Check the user input
-                    if (userInput == 'abort') {
-                        error('Manual intervention aborted the pipeline.')
-                    } else {
-                        echo "User comments: ${userInput}"
-                    }
-                }
-            }
-        }
-
         stage('Build Deploy Code') {
-
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-                     // args    '-u 1000:1000  --privileged'
-                   }
-            }
-
             when {
                 branch 'main'
             }
@@ -186,11 +144,6 @@ pipeline {
                     )
                 }
             }
-        }
-    }
-    post {
-        failure {
-            echo 'Pipeline failed'
         }
     }
 }
