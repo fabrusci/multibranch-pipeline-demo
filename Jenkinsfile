@@ -132,6 +132,22 @@ environment {
             }
         }
 
+stage('Manual Intervention') {
+            steps {
+                script {
+                    // Pause the pipeline and wait for manual input
+                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+                    
+                    // Check the user input
+                    if (userInput == 'abort') {
+                        error('Manual intervention aborted the pipeline.')
+                    } else {
+                        echo "User comments: ${userInput}"
+                    }
+                }
+            }
+        }
+
 
         stage('Build Deploy Code') {
             when {
@@ -158,5 +174,10 @@ environment {
             }
         }
 
+    }
+    post {
+        failure {
+            echo 'Pipeline failed'
+        }
     }   
 }
