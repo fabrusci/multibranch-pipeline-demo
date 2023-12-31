@@ -120,14 +120,19 @@ pipeline {
                                     """
                            )
                 }
-
+                
                 script {
                         sh(
                             script: '''#!/bin/bash
+                                    set -x
                                     echo " Second script"
+                                    touch pippo.txt
+                                    pwd
+                                    ls
                                     '''
                            )
                 }
+                stash name: 'pippo', includes: '*.txt'  // stash all *.txt file
             }
         }
 
@@ -139,6 +144,7 @@ pipeline {
                   }
             }
             steps {
+                unstash 'pippo'  // unstash 
                 script {
                     // Pause the pipeline and wait for manual input
                     def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
