@@ -83,7 +83,8 @@ environment {
                                 //   ]
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install'),
-                                choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
+                                string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
+                                //choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
                             ])
                         ])
                     }
@@ -101,7 +102,6 @@ environment {
                         sh (
                             script: """#!/bin/bash        
                                     set -x
-                                    env
                                     ls -la
                                     pwd
                                     echo "Update asdf"
@@ -111,10 +111,12 @@ environment {
                                     asdf plugin add awscli 
                                     asdf install awscli ${AWSCLI_VERSION}
                                     asdf local awscli ${AWSCLI_VERSION}
+                                    echo "TERRAFORM version : ${TERRAFORM_VERSION}"
                                     asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
-                                    asdf install terraform 1.4.6
-                                    asdf local terraform 1.4.6
+                                    asdf install terraform ${TERRAFORM_VERSION}
+                                    asdf local terraform ${TERRAFORM_VERSION}
                                     asdf reshim
+                                    env
                                     """
                            )               
                 }
@@ -133,7 +135,7 @@ environment {
 
         stage('Build Deploy Code') {
             when {
-                branch 'develop'
+                branch 'main'
             }
             steps {
 
