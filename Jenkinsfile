@@ -1,6 +1,7 @@
 pipeline {
     agent {
-            docker { image 'jenkins-dads-agent:latest'
+            any
+            //docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
             }
     }
@@ -48,8 +49,13 @@ pipeline {
         //    }
         //}
 
-        stage('Setup parameters')
+        stage('Setup parameters')    
         {
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+                     // args    '-u 1000:1000  --privileged'
+                   }
+            }
             steps {
                     script {
                     properties([
@@ -85,6 +91,13 @@ pipeline {
             }
         }
         stage('Setup tools') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+                     // args    '-u 1000:1000  --privileged'
+                   }
+            }
+
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
@@ -124,6 +137,12 @@ pipeline {
         }
 
         stage('Manual Intervention') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+                     // args    '-u 1000:1000  --privileged'
+                   }
+            }
             steps {
                 script {
                     // Pause the pipeline and wait for manual input
@@ -140,6 +159,13 @@ pipeline {
         }
 
         stage('Build Deploy Code') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+                     // args    '-u 1000:1000  --privileged'
+                   }
+            }
+
             when {
                 branch 'main'
             }
