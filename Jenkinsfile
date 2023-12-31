@@ -1,9 +1,6 @@
 pipeline {
-    agent {
-            docker { image 'jenkins-dads-agent:latest'
-            // args    '-u 1000:1000  --privileged'
-            }
-    }
+
+    agent none
 
     //parameters {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
@@ -50,6 +47,12 @@ pipeline {
 
         stage('Setup parameters')
         {
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+            // args    '-u 1000:1000  --privileged'
+            reuseNode true
+            }
+    }
             steps {
                     script {
                     properties([
@@ -85,6 +88,13 @@ pipeline {
             }
         }
         stage('Setup tools') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+            // args    '-u 1000:1000  --privileged'
+            reuseNode true
+                   }
+            }
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
@@ -112,19 +122,32 @@ pipeline {
                                     """
                            )
                 }
-
+                
                 script {
                         sh(
                             script: '''#!/bin/bash
+                                    set -x
                                     echo " Second script"
+                                    touch pippo.txt
+                                    pwd
+                                    ls
                                     '''
                            )
                 }
+                stash name: 'pippo', includes: '*.txt'  // stash all *.txt file
             }
         }
 
         stage('Manual Intervention') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+            // args    '-u 1000:1000  --privileged'
+            reuseNode true
+                  }
+            }
             steps {
+                unstash 'pippo'  // unstash 
                 script {
                     // Pause the pipeline and wait for manual input
                     def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
@@ -140,6 +163,13 @@ pipeline {
         }
 
         stage('Build Deploy Code') {
+
+            agent {
+            docker { image 'jenkins-dads-agent:latest'
+            // args    '-u 1000:1000  --privileged'
+            reuseNode true
+                   }
+            }
             when {
                 branch 'main'
             }
