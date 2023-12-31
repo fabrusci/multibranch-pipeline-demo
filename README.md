@@ -14,3 +14,13 @@ bugfix 2.0
 feature 4
 feature 5
 
+bugfix 2
+
+modified awscli version
+test params
+test params 1
+test persistent params
+new test
+new test choiche
+new test default
+new test
