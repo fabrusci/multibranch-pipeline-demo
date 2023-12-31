@@ -50,6 +50,7 @@ pipeline {
             agent {
             docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
+            reuseNode true
             }
     }
             steps {
@@ -91,6 +92,7 @@ pipeline {
             agent {
             docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
+            reuseNode true
                    }
             }
             // environment{
@@ -141,6 +143,7 @@ pipeline {
             agent {
             docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
+            reuseNode true
                   }
             }
             steps {
@@ -164,6 +167,7 @@ pipeline {
             agent {
             docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
+            reuseNode true
                    }
             }
             when {
