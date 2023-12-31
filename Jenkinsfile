@@ -1,28 +1,24 @@
 pipeline {
-
     agent {
-          
-            docker { image 'jenkins-dads-agent:latest' 
-                     // args    '-u 1000:1000  --privileged'
-                   }
-          }
+            docker { image 'jenkins-dads-agent:latest'
+            // args    '-u 1000:1000  --privileged'
+            }
+    }
 
-        //parameters {
-        //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
-        //  }
-environment {
-        AWS_DEFAULT_REGION    = "eu-central-1"
-        
+    //parameters {
+    //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
+    //  }
+    environment {
+        AWS_DEFAULT_REGION    = 'eu-central-1'
     }
     options {
-        buildDiscarder logRotator( 
-                    daysToKeepStr: '16', 
+        buildDiscarder logRotator(
+                    daysToKeepStr: '16',
                     numToKeepStr: '10'
             )
     }
 
     stages {
-        
        //stage('Cleanup Workspace') {
        //    steps {
        //        //cleanWs()
@@ -36,8 +32,8 @@ environment {
         //stage('Code Checkout') {
         //    steps {
         //        checkout([
-        //            $class: 'GitSCM', 
-        //            branches: [[name: '*/main']], 
+        //            $class: 'GitSCM',
+        //            branches: [[name: '*/main']],
         //            userRemoteConfigs: [[url: 'https://github.com/fabrusci/multibranch-pipeline-demo.git']]
         //        ])
         //    }
@@ -51,56 +47,52 @@ environment {
         //        """
         //    }
         //}
-    
 
         stage('Setup parameters')
         {
-            steps{
-                
+            steps {
                     script {
                     properties([
                             parameters([
-                                //$class: 'ChoiceParameter', 
-                                //   choiceType: 'PT_SINGLE_SELECT', 
-                                //   description: 'Select the Environemnt from the Dropdown List', 
-                                //   filterLength: 1, 
-                                //   filterable: false, 
-                                //   name: 'Env', 
+                                //$class: 'ChoiceParameter',
+                                //   choiceType: 'PT_SINGLE_SELECT',
+                                //   description: 'Select the Environemnt from the Dropdown List',
+                                //   filterLength: 1,
+                                //   filterable: false,
+                                //   name: 'Env',
                                 //   script: [
-                                //       $class: 'GroovyScript', 
+                                //       $class: 'GroovyScript',
                                 //       fallbackScript: [
-                                //           classpath: [], 
-                                //           sandbox: false, 
-                                //           script: 
+                                //           classpath: [],
+                                //           sandbox: false,
+                                //           script:
                                 //               "return['Could not get The environemnts']"
-                                //       ], 
+                                //       ],
                                 //       script: [
-                                //           classpath: [], 
-                                //           sandbox: false, 
-                                //           script: 
+                                //           classpath: [],
+                                //           sandbox: false,
+                                //           script:
                                 //               "return['dev','stage','prod']"
                                 //       ]
                                 //   ]
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.14', description: 'AWSCLI Version to install'),
                                 string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
-                                //choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
+                            //choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
                             ])
                         ])
                     }
-                
             }
         }
         stage('Setup tools') {
-             // environment{
-             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
-             //   }
-            steps {               
+            // environment{
+            //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
+            //   }
+            steps {
                 script {
-                
-                
-                        sh (
-                            script: """#!/bin/bash        
+
+                        sh(
+                            script: """#!/bin/bash
                                     set -x
                                     ls -la
                                     pwd
@@ -108,7 +100,7 @@ environment {
                                     asdf update
                                     echo "Install awscli plugin"
                                     echo "AWSCLI version : ${AWSCLI_VERSION}"
-                                    asdf plugin add awscli 
+                                    asdf plugin add awscli
                                     asdf install awscli ${AWSCLI_VERSION}
                                     asdf local awscli ${AWSCLI_VERSION}
                                     echo "TERRAFORM version : ${TERRAFORM_VERSION}"
@@ -118,26 +110,25 @@ environment {
                                     asdf reshim
                                     env
                                     """
-                           )               
+                           )
                 }
 
                 script {
-
-                        sh (
-                            script: """#!/bin/bash        
+                        sh(
+                            script: '''#!/bin/bash
                                     echo " Second script"
-                                    """
-                           )               
+                                    '''
+                           )
                 }
             }
         }
 
-stage('Manual Intervention') {
+        stage('Manual Intervention') {
             steps {
                 script {
                     // Pause the pipeline and wait for manual input
                     def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-                    
+
                     // Check the user input
                     if (userInput == 'abort') {
                         error('Manual intervention aborted the pipeline.')
@@ -148,36 +139,32 @@ stage('Manual Intervention') {
             }
         }
 
-
         stage('Build Deploy Code') {
             when {
                 branch 'main'
             }
             steps {
-
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: "aws-credential-abruscidemo"]]) {
-               
-                sh('env')
-                sh ( 
-                    script: """#!/bin/bash
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credential-abruscidemo']]) {
+                    sh('env')
+                    sh(
+                    script: '''#!/bin/bash
                             echo "Check AWS credential"
                             aws sts get-caller-identity
-                            """
-                    )               
-                sh (
-                    script: """#!/bin/bash
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
                             echo "Check terraform version"
                             terraform version
-                            """
+                            '''
                     )
                 }
             }
         }
-
     }
     post {
         failure {
             echo 'Pipeline failed'
         }
-    }   
+    }
 }
