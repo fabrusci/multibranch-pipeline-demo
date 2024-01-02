@@ -150,7 +150,7 @@ pipeline {
             when {
                 branch 'feature'
             }
-            
+
             steps {
                 unstash 'pippo'  // unstash 
                 script {
@@ -176,7 +176,7 @@ pipeline {
             }
             }
             when {
-                branch 'main'
+                branch 'develop'
             }
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credential-abruscidemo']]) {
