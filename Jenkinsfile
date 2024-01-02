@@ -146,6 +146,11 @@ pipeline {
             reuseNode true
             }
             }
+
+            when {
+                branch 'feature'
+            }
+            
             steps {
                 unstash 'pippo'  // unstash 
                 script {
