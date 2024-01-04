@@ -147,7 +147,7 @@ pipeline {
             }
             }
 
-            when { beforagent
+            when { beforAgent
                 branch 'feature'
             }
 
