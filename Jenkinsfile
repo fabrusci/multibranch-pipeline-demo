@@ -146,6 +146,12 @@ pipeline {
             reuseNode true
             }
             }
+
+            when { beforeAgent
+                branch 'feature'
+                beforeAgent true
+            }
+
             steps {
                 unstash 'pippo'  // unstash 
                 script {
@@ -171,7 +177,7 @@ pipeline {
             }
             }
             when {
-                branch 'main'
+                branch 'develop'
             }
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credential-abruscidemo']]) {
