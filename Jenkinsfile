@@ -210,8 +210,8 @@ pipeline {
                             '''
                     )
                 }
-            }
             cleanWs()
+            }
         }
     }
     post {
