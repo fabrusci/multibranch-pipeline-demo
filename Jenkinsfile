@@ -14,7 +14,6 @@ pipeline {
                     numToKeepStr: '4'
             )
         newContainerPerStage()
-    }
 
 
     }
