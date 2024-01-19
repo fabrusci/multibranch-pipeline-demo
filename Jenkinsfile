@@ -179,9 +179,9 @@ pipeline {
             reuseNode true
             }
             }
-            when {
-                branch 'develop'
-            }
+            // when {
+            //    branch 'main'
+            // }
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credential-abruscidemo']]) {
                     sh('env')
