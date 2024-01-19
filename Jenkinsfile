@@ -214,6 +214,11 @@ pipeline {
         }
     }
     post {
+        always {
+             cleanWs(
+                    //patterns: [[pattern: '*.txt', type: 'INCLUDE']]
+                    ) 
+                }
         failure {
             echo 'Pipeline failed'
         }
