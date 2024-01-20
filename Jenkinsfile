@@ -98,7 +98,7 @@ pipeline {
                 // args    '-u 1000:1000  --privileged'
                 // reuseNode true
                 // }
-                label  'agent1'
+                // label  'agent1'
             // }
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
@@ -181,7 +181,7 @@ pipeline {
                   // args    '-u 1000:1000  --privileged'
                   //reuseNode true
                   //}
-                  label  'agent1'
+                  // label  'agent1'
             // }
             // when {
             //    branch 'main'
