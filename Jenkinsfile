@@ -214,11 +214,16 @@ pipeline {
                             '''
                     )
                 }
-            cleanWs()
+            // cleanWs()
             }
         }
     }
     post {
+
+        always {
+            cleanWs()
+        }
+
         failure {
             echo 'Pipeline failed'
             cleanWs()
