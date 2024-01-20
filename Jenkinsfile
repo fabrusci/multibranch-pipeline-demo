@@ -154,8 +154,8 @@ pipeline {
             }
 
             when {
-                branch 'feature'
-                beforeAgent true
+                branch 'develop'
+                // beforeAgent true
             }
 
             steps {
