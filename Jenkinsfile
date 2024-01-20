@@ -1,6 +1,6 @@
 pipeline {
 
-    agent none
+    agent {label  'agent1'}
 
     //parameters {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
@@ -50,12 +50,13 @@ pipeline {
 
         stage('Setup parameters')
         {
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
+            //agent {
+            //docker { image 'jenkins-dads-agent:latest'
             // args    '-u 1000:1000  --privileged'
-            reuseNode true
-            }
-            }
+            //reuseNode true
+            // }
+            //label  'agent1'
+            // }
             steps {
                     script {
                     properties([
@@ -92,12 +93,13 @@ pipeline {
         }
         stage('Setup tools') {
 
-            agent {
-                docker { image 'jenkins-dads-agent:latest'
-            // args    '-u 1000:1000  --privileged'
-            reuseNode true
-                }
-            }
+            // agent {
+                //docker { image 'jenkins-dads-agent:latest'
+                // args    '-u 1000:1000  --privileged'
+                // reuseNode true
+                // }
+                // label  'agent1'
+            // }
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
@@ -143,16 +145,17 @@ pipeline {
 
         stage('Manual Intervention') {
 
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-            // args    '-u 1000:1000  --privileged'
-            reuseNode true
-            }
-            }
+            // agent {
+                 // docker { image 'jenkins-dads-agent:latest'
+                 // args    '-u 1000:1000  --privileged'
+                //reuseNode true
+                // }
+            // label  'agent1'
+            // }
 
             when {
-                branch 'feature'
-                beforeAgent true
+                branch 'develop'
+                // beforeAgent true
             }
 
             steps {
@@ -173,12 +176,13 @@ pipeline {
 
         stage('Build Deploy Code') {
 
-            agent {
-            docker { image 'jenkins-dads-agent:latest'
-            // args    '-u 1000:1000  --privileged'
-            reuseNode true
-            }
-            }
+            // agent {
+                  //docker { image 'jenkins-dads-agent:latest'
+                  // args    '-u 1000:1000  --privileged'
+                  //reuseNode true
+                  //}
+                  // label  'agent1'
+            // }
             // when {
             //    branch 'main'
             // }
@@ -187,18 +191,18 @@ pipeline {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
-                               echo "Update asdf"
-                               asdf update
-                               echo "Install awscli plugin"
-                               echo "AWSCLI version : ${AWSCLI_VERSION}"
-                               asdf plugin add awscli
-                               asdf install awscli ${AWSCLI_VERSION}
-                               asdf local awscli ${AWSCLI_VERSION}
-                               echo "TERRAFORM version : ${TERRAFORM_VERSION}"
-                               asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
-                               asdf install terraform ${TERRAFORM_VERSION}
-                               asdf local terraform ${TERRAFORM_VERSION}
-                               asdf reshim
+                               #echo "Update asdf"
+                               #asdf update
+                               #echo "Install awscli plugin"
+                               #echo "AWSCLI version : ${AWSCLI_VERSION}"
+                               #asdf plugin add awscli
+                               #asdf install awscli ${AWSCLI_VERSION}
+                               #asdf local awscli ${AWSCLI_VERSION}
+                               #echo "TERRAFORM version : ${TERRAFORM_VERSION}"
+                               #asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+                               #asdf install terraform ${TERRAFORM_VERSION}
+                               #asdf local terraform ${TERRAFORM_VERSION}
+                               #asdf reshim
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
@@ -210,13 +214,19 @@ pipeline {
                             '''
                     )
                 }
-            cleanWs()
+            // cleanWs()
             }
         }
     }
     post {
+
+        always {
+            cleanWs()
+        }
+
         failure {
             echo 'Pipeline failed'
+            cleanWs()
         }
     }
 }
