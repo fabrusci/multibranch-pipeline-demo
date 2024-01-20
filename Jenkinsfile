@@ -176,13 +176,13 @@ pipeline {
 
         stage('Build Deploy Code') {
 
-             agent {
+             // agent {
                   //docker { image 'jenkins-dads-agent:latest'
                   // args    '-u 1000:1000  --privileged'
                   //reuseNode true
                   //}
-                   label  'agent1'
-             }
+                  // label  'agent1'
+             // }
             // when {
             //    branch 'main'
             // }
