@@ -13,7 +13,7 @@ pipeline {
                     daysToKeepStr: '2',
                     numToKeepStr: '4'
             )
-        newContainerPerStage()
+        // newContainerPerStage()
 
 
     }
@@ -107,7 +107,7 @@ pipeline {
                 script {
 
                         sh(
-                            script: """#!/bin/bash
+                            script: '''#!/bin/bash
                                     set -x
                                     ls -la
                                     pwd
@@ -124,7 +124,7 @@ pipeline {
                                     asdf local terraform ${TERRAFORM_VERSION}
                                     asdf reshim
                                     env
-                                    """
+                                    '''
                            )
                 }
                 
@@ -176,13 +176,13 @@ pipeline {
 
         stage('Build Deploy Code') {
 
-            // agent {
+             // agent {
                   //docker { image 'jenkins-dads-agent:latest'
                   // args    '-u 1000:1000  --privileged'
                   //reuseNode true
                   //}
                   // label  'agent1'
-            // }
+             // }
             // when {
             //    branch 'main'
             // }
