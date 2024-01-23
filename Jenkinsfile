@@ -13,7 +13,7 @@ pipeline {
                     daysToKeepStr: '2',
                     numToKeepStr: '4'
             )
-        newContainerPerStage()
+        // newContainerPerStage()
 
 
     }
@@ -107,7 +107,7 @@ pipeline {
                 script {
 
                         sh(
-                            script: """#!/bin/bash
+                            script: '''#!/bin/bash
                                     set -x
                                     ls -la
                                     pwd
@@ -124,7 +124,7 @@ pipeline {
                                     asdf local terraform ${TERRAFORM_VERSION}
                                     asdf reshim
                                     env
-                                    """
+                                    '''
                            )
                 }
                 
