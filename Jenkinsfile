@@ -187,7 +187,7 @@ pipeline {
             //    branch 'main'
             // }
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'develop-aws-credential']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: '${env.BRANCH_NAME}-aws-credential']]) {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
