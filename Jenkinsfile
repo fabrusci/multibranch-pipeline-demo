@@ -186,6 +186,9 @@ pipeline {
             // when {
             //    branch 'main'
             // }
+            environment {
+                           TF_IN_AUTOMATION    = 1
+                        }
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
                     sh('env')
