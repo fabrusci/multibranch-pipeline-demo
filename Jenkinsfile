@@ -157,7 +157,7 @@ pipeline {
 
              when { 
                     anyOf { 
-                            branch 'master'; branch 'develop'; branch 'feature' 
+                            branch 'main'; branch 'develop'; branch 'feature' 
                           } 
                   }
             environment {
@@ -192,7 +192,7 @@ pipeline {
 
             when { 
                     anyOf { 
-                            branch 'master'; branch 'develop'; branch 'feature' 
+                            branch 'main'; branch 'develop'; branch 'feature' 
                           } 
                   }
             environment {
@@ -227,7 +227,7 @@ pipeline {
 
             when { 
                     anyOf { 
-                            branch 'master'; branch 'develop'; 
+                            branch 'main'; branch 'develop'; 
                           } 
                   }
             environment {
