@@ -198,9 +198,10 @@ pipeline {
         stage('Terraform plan') {
 
             when { 
-                    anyOf { 
-                            branch 'main'; branch 'develop'; branch 'feature' 
-                          } 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'feature'}
+                    expression { params.ACTION != 'destroy' }
+                          }
                   }
             steps {
                 dir('ci') 
@@ -230,9 +231,10 @@ pipeline {
         stage('Terraform apply') {
 
             when { 
-                    anyOf { 
-                            branch 'main'; branch 'develop'; 
-                          } 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' }
+                    expression { params.ACTION != 'destroy' }
+                          }
                   }
             steps {
                 dir('ci') 
