@@ -8,6 +8,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION    = "eu-central-1"
         ACTION                = "${params.ACTION}"
+        TF_IN_AUTOMATION      = 1
     }
     options {
         buildDiscarder logRotator(
@@ -164,9 +165,6 @@ pipeline {
                             branch 'main'; branch 'develop'; branch 'feature' 
                           } 
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
             steps {
                 dir('ci') 
                 {
@@ -204,9 +202,6 @@ pipeline {
                             branch 'main'; branch 'develop'; branch 'feature' 
                           } 
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
             steps {
                 dir('ci') 
                 {
@@ -239,9 +234,6 @@ pipeline {
                             branch 'main'; branch 'develop'; 
                           } 
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
             steps {
                 dir('ci') 
                 {
