@@ -174,7 +174,87 @@ pipeline {
             }
         }
 
-        stage('Build Deploy Code') {
+        stage('Terraform init') {
+
+             // agent {
+                  //docker { image 'jenkins-dads-agent:latest'
+                  // args    '-u 1000:1000  --privileged'
+                  //reuseNode true
+                  //}
+                  // label  'agent1'
+             // }
+            // when {
+            //    branch 'main'
+            // }
+            environment {
+                           TF_IN_AUTOMATION    = 1
+                        }
+            steps {
+                dir('ci') 
+                {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    sh('env')
+                    sh(
+                    script: '''#!/bin/bash
+                               echo "Check AWS credential"
+                               aws sts get-caller-identity
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Check terraform version"
+                            terraform version
+                            echo "Check current directory"
+                            pwd
+                            '''
+                    )
+                }
+                  // cleanWs()
+               }
+            }
+        } 
+
+        stage('Terraform plan') {
+
+             // agent {
+                  //docker { image 'jenkins-dads-agent:latest'
+                  // args    '-u 1000:1000  --privileged'
+                  //reuseNode true
+                  //}
+                  // label  'agent1'
+             // }
+            // when {
+            //    branch 'main'
+            // }
+            environment {
+                           TF_IN_AUTOMATION    = 1
+                        }
+            steps {
+                dir('ci') 
+                {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    sh('env')
+                    sh(
+                    script: '''#!/bin/bash
+                               echo "Check AWS credential"
+                               aws sts get-caller-identity
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Check terraform version"
+                            terraform version
+                            echo "Check current directory"
+                            pwd
+                            '''
+                    )
+                }
+                  // cleanWs()
+               }
+            }
+        }
+
+        stage('Terraform apply') {
 
              // agent {
                   //docker { image 'jenkins-dads-agent:latest'
