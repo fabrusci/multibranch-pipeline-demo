@@ -258,6 +258,38 @@ pipeline {
                }
             }
         }
+        stage('Terraform destroy') {
+
+            when { 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' }
+                    expression { params.ACTION == 'destroy' }
+                          }
+                  }
+            steps {
+                dir('ci') 
+                {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    sh('env')
+                    sh(
+                    script: '''#!/bin/bash
+                               echo "Check AWS credential"
+                               aws sts get-caller-identity
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Check terraform version"
+                            terraform version
+                            echo "Check current directory"
+                            pwd
+                            '''
+                    )
+                }
+                  // cleanWs()
+               }
+            }
+        }
     }
     post {
 
