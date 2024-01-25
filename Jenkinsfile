@@ -6,8 +6,8 @@ pipeline {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
     //  }
     environment {
-        AWS_DEFAULT_REGION    = 'eu-central-1'
-        ACTION                = '${params.ACTION}'
+        AWS_DEFAULT_REGION    = "eu-central-1"
+        ACTION                = "${params.ACTION}"
     }
     options {
         buildDiscarder logRotator(
