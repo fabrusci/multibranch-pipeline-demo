@@ -50,13 +50,7 @@ pipeline {
 
         stage('Setup parameters')
         {
-            //agent {
-            //docker { image 'jenkins-dads-agent:latest'
-            // args    '-u 1000:1000  --privileged'
-            //reuseNode true
-            // }
-            //label  'agent1'
-            // }
+            
             steps {
                     script {
                     properties([
@@ -93,13 +87,6 @@ pipeline {
         }
         stage('Setup tools') {
 
-            // agent {
-                //docker { image 'jenkins-dads-agent:latest'
-                // args    '-u 1000:1000  --privileged'
-                // reuseNode true
-                // }
-                // label  'agent1'
-            // }
             // environment{
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
@@ -145,14 +132,6 @@ pipeline {
 
         stage('Manual Intervention') {
 
-            // agent {
-                 // docker { image 'jenkins-dads-agent:latest'
-                 // args    '-u 1000:1000  --privileged'
-                //reuseNode true
-                // }
-            // label  'agent1'
-            // }
-
             when {
                 branch 'feature'
                 beforeAgent true
@@ -176,16 +155,11 @@ pipeline {
 
         stage('Terraform init') {
 
-             // agent {
-                  //docker { image 'jenkins-dads-agent:latest'
-                  // args    '-u 1000:1000  --privileged'
-                  //reuseNode true
-                  //}
-                  // label  'agent1'
-             // }
-            // when {
-            //    branch 'main'
-            // }
+             when { 
+                    anyOf { 
+                            branch 'master'; branch 'develop'; branch 'feature' 
+                          } 
+                  }
             environment {
                            TF_IN_AUTOMATION    = 1
                         }
@@ -216,16 +190,11 @@ pipeline {
 
         stage('Terraform plan') {
 
-             // agent {
-                  //docker { image 'jenkins-dads-agent:latest'
-                  // args    '-u 1000:1000  --privileged'
-                  //reuseNode true
-                  //}
-                  // label  'agent1'
-             // }
-            // when {
-            //    branch 'main'
-            // }
+            when { 
+                    anyOf { 
+                            branch 'master'; branch 'develop'; branch 'feature' 
+                          } 
+                  }
             environment {
                            TF_IN_AUTOMATION    = 1
                         }
@@ -256,16 +225,11 @@ pipeline {
 
         stage('Terraform apply') {
 
-             // agent {
-                  //docker { image 'jenkins-dads-agent:latest'
-                  // args    '-u 1000:1000  --privileged'
-                  //reuseNode true
-                  //}
-                  // label  'agent1'
-             // }
-            // when {
-            //    branch 'main'
-            // }
+            when { 
+                    anyOf { 
+                            branch 'master'; branch 'develop'; 
+                          } 
+                  }
             environment {
                            TF_IN_AUTOMATION    = 1
                         }
