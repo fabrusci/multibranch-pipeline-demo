@@ -6,16 +6,19 @@ pipeline {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
     //  }
     environment {
-        AWS_DEFAULT_REGION    = 'eu-central-1'
+        AWS_DEFAULT_REGION    = "eu-central-1"
+        ACTION                = "${params.ACTION}"
+        TF_IN_AUTOMATION      = 1
     }
     options {
         buildDiscarder logRotator(
                     daysToKeepStr: '2',
                     numToKeepStr: '4'
             )
+        timestamps()
+        timeout(time: 30, unit: 'MINUTES')
+        disableConcurrentBuilds()
         // newContainerPerStage()
-
-
     }
 
     stages {
@@ -79,7 +82,9 @@ pipeline {
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.13', description: 'AWSCLI Version to install'),
                                 string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
-                            //choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
+                                choice (name: 'ACTION',
+				                             choices: [ 'plan', 'apply', 'destroy'],
+				                             description: 'Run terraform plan / apply / destroy')
                             ])
                         ])
                     }
@@ -160,14 +165,10 @@ pipeline {
                             branch 'main'; branch 'develop'; branch 'feature' 
                           } 
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
             steps {
                 dir('ci') 
                 {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
-                    sh('env')
                     sh(
                     script: '''#!/bin/bash
                                echo "Check AWS credential"
@@ -182,6 +183,12 @@ pipeline {
                             pwd
                             '''
                     )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Terraform init"
+                            # terraform init -backend-config=./backend-config.hcl -no-color --reconfigure
+                            '''
+                    )
                 }
                   // cleanWs()
                }
@@ -191,13 +198,11 @@ pipeline {
         stage('Terraform plan') {
 
             when { 
-                    anyOf { 
-                            branch 'main'; branch 'develop'; branch 'feature' 
-                          } 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'feature'}
+                    expression { params.ACTION != 'destroy' }
+                          }
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
             steps {
                 dir('ci') 
                 {
@@ -226,13 +231,43 @@ pipeline {
         stage('Terraform apply') {
 
             when { 
-                    anyOf { 
-                            branch 'main'; branch 'develop'; 
-                          } 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' }
+                    expression { params.ACTION != 'destroy' }
+                          }
                   }
-            environment {
-                           TF_IN_AUTOMATION    = 1
-                        }
+            steps {
+                dir('ci') 
+                {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    sh('env')
+                    sh(
+                    script: '''#!/bin/bash
+                               echo "Check AWS credential"
+                               aws sts get-caller-identity
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Check terraform version"
+                            terraform version
+                            echo "Check current directory"
+                            pwd
+                            '''
+                    )
+                }
+                  // cleanWs()
+               }
+            }
+        }
+        stage('Terraform destroy') {
+
+            when { 
+                    allOf {
+                    expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' }
+                    expression { params.ACTION == 'destroy' }
+                          }
+                  }
             steps {
                 dir('ci') 
                 {
