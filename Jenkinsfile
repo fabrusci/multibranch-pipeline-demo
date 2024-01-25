@@ -7,15 +7,17 @@ pipeline {
     //  }
     environment {
         AWS_DEFAULT_REGION    = 'eu-central-1'
+        ACTION                = '${params.ACTION}'
     }
     options {
         buildDiscarder logRotator(
                     daysToKeepStr: '2',
                     numToKeepStr: '4'
             )
+        timestamps()
+        timeout(time: 30, unit: 'MINUTES')
+        disableConcurrentBuilds()
         // newContainerPerStage()
-
-
     }
 
     stages {
@@ -79,7 +81,9 @@ pipeline {
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.13', description: 'AWSCLI Version to install'),
                                 string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
-                            //choice(name: 'ENVIRONMENT', choices: [params.CHOICE, 'One', 'Two', 'Three'], description: 'Pick something')
+                                choice (name: 'ACTION',
+				                             choices: [ 'plan', 'apply', 'destroy'],
+				                             description: 'Run terraform plan / apply / destroy')
                             ])
                         ])
                     }
