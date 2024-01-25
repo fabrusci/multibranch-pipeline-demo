@@ -190,22 +190,12 @@ pipeline {
                            TF_IN_AUTOMATION    = 1
                         }
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                dir('ci') 
+                {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
-                               #echo "Update asdf"
-                               #asdf update
-                               #echo "Install awscli plugin"
-                               #echo "AWSCLI version : ${AWSCLI_VERSION}"
-                               #asdf plugin add awscli
-                               #asdf install awscli ${AWSCLI_VERSION}
-                               #asdf local awscli ${AWSCLI_VERSION}
-                               #echo "TERRAFORM version : ${TERRAFORM_VERSION}"
-                               #asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
-                               #asdf install terraform ${TERRAFORM_VERSION}
-                               #asdf local terraform ${TERRAFORM_VERSION}
-                               #asdf reshim
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
@@ -214,10 +204,13 @@ pipeline {
                     script: '''#!/bin/bash
                             echo "Check terraform version"
                             terraform version
+                            echo "Check current directory"
+                            pwd
                             '''
                     )
                 }
-            // cleanWs()
+                  // cleanWs()
+               }
             }
         }
     }
