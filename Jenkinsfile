@@ -167,7 +167,6 @@ pipeline {
                 dir('ci') 
                 {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
-                    sh('env')
                     sh(
                     script: '''#!/bin/bash
                                echo "Check AWS credential"
@@ -180,6 +179,12 @@ pipeline {
                             terraform version
                             echo "Check current directory"
                             pwd
+                            '''
+                    )
+                    sh(
+                    script: '''#!/bin/bash
+                            echo "Terraform init"
+                            # terraform init -backend-config=./backend-config.hcl -no-color --reconfigure
                             '''
                     )
                 }
