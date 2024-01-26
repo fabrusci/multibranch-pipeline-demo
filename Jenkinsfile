@@ -183,12 +183,16 @@ pipeline {
                             pwd
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
+
+                    withEnv(['TF_CLI_ARGS_init=-backend-config="./backend-configs/${BRANCH_NAME}-backend-config.hcl"']) {
+                          sh(
+                            script: '''#!/bin/bash
+                            env
                             echo "Terraform init"
                             terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
                             '''
-                    )
+                            )
+                    }
                 }
                   // cleanWs()
                }
