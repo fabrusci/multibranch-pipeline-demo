@@ -135,28 +135,28 @@ pipeline {
             }
         }
 
-        stage('Manual Intervention') {
-
-            when {
-                branch 'feature'
-                beforeAgent true
-            }
-
-            steps {
-                unstash 'pippo'  // unstash 
-                script {
-                    // Pause the pipeline and wait for manual input
-                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-
-                    // Check the user input
-                    if (userInput == 'abort') {
-                        error('Manual intervention aborted the pipeline.')
-                    } else {
-                        echo "User comments: ${userInput}"
-                    }
-                }
-            }
-        }
+        // stage('Manual Intervention') {
+// 
+        //     when {
+        //         branch 'feature'
+        //         beforeAgent true
+        //     }
+// 
+        //     steps {
+        //         unstash 'pippo'  // unstash 
+        //         script {
+        //             // Pause the pipeline and wait for manual input
+        //             def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+// 
+        //             // Check the user input
+        //             if (userInput == 'abort') {
+        //                 error('Manual intervention aborted the pipeline.')
+        //             } else {
+        //                 echo "User comments: ${userInput}"
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Terraform init') {
 
@@ -169,6 +169,7 @@ pipeline {
                 dir('ci') 
                 {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    unstash 'pippo'  // unstash 
                     sh(
                     script: '''#!/bin/bash
                                echo "Check AWS credential"
@@ -205,7 +206,7 @@ pipeline {
                             echo "Terraform init"
                             set -x
                             #terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
-                            terraform init -no-color --reconfiigure
+                            terraform init -no-color --reconfigure
                             '''
                             )
                     }
