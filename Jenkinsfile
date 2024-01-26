@@ -191,7 +191,7 @@ pipeline {
                             echo "Terraform init"
                             set -x
                             #terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
-                            terraform init
+                            terraform init -no-color --reconfiigure
                             '''
                             )
                     }
