@@ -186,7 +186,7 @@ pipeline {
                     sh(
                     script: '''#!/bin/bash
                             echo "Terraform init"
-                            # terraform init -backend-config=./backend-config.hcl -no-color --reconfigure
+                            terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
                             '''
                     )
                 }
