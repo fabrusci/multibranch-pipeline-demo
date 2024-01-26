@@ -184,7 +184,7 @@ pipeline {
                             '''
                     )
 
-                    withEnv(['TF_CLI_ARGS_init=-backend-config="./backend-configs/${BRANCH_NAME}-backend-config.hcl"']) {
+                    withEnv(["TF_CLI_ARGS_init=-backend-config='./backend-configs/${BRANCH_NAME}-backend-config.hcl'"]) {
                           sh(
                             script: '''#!/bin/bash
                             env
