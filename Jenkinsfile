@@ -204,10 +204,10 @@ pipeline {
 
                           sh(
                             script: '''#!/bin/bash
+                            set -x
                             echo $TF_CLI_ARGS_init
                             echo "Terraform init"
-                            set -x
-                            #terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
+                            # terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
                             terraform init -no-color --reconfigure
                             '''
                             )
@@ -239,10 +239,10 @@ pipeline {
                     )
                     sh(
                     script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
-                            echo "Check current directory"
-                            pwd
+                            set -x
+                            terraform state pull
+                            echo "Terraform plan"
+                            terraform plan -out=plan.tfplan -no-color 
                             '''
                     )
                 }
