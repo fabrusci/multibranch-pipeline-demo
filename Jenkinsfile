@@ -238,14 +238,19 @@ pipeline {
                                aws sts get-caller-identity
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
-                            set -x
-                            terraform state pull
-                            echo "Terraform plan"
-                            terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
-                            '''
-                    )
+                    
+                    withEnv(["STACK=${STACK}"]) 
+                    {
+                        sh(
+                         script: '''#!/bin/bash
+                                    set -x
+                                    echo "${STACK}
+                                    terraform state pull
+                                    echo "Terraform plan"
+                                    terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
+                                  '''
+                          )
+                    }
                 }
                   // cleanWs()
                }
