@@ -89,6 +89,17 @@ pipeline {
 				                             description: 'Run terraform plan / apply / destroy')
                             ])
                         ])
+
+
+                       // Set the STACK variable based on the Git branch
+                            if ( env.BRANCH_NAME == 'feature' || env.BRANCH_NAME == 'develop') {
+                                 STACK = 'dev'
+                                } else if ( env.BRANCH_NAME == 'main') {
+                                STACK = 'prod'
+                               } else {
+                                      echo "Unsupported Git branch: ${env.BRANCH_NAME}"
+                                      error "Unsupported Git branch"
+                                      }
                     }
             }
         }
