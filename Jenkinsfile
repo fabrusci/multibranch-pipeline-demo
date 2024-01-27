@@ -189,19 +189,6 @@ pipeline {
 
                     withEnv(["TF_CLI_ARGS_init=-backend-config='./backend-configs/${BRANCH_NAME}-backend-config.hcl'"]) {
 
-                         script {
-                                    // Pause the pipeline and wait for manual input
-                                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-                
-                                    // Check the user input
-                                    if (userInput == 'abort') {
-                                        error('Manual intervention aborted the pipeline.')
-                                    } else {
-                                        echo "User comments: ${userInput}"
-                                    }
-                                }
-
-
                           sh(
                             script: '''#!/bin/bash
                             set -x
@@ -242,7 +229,7 @@ pipeline {
                             set -x
                             terraform state pull
                             echo "Terraform plan"
-                            terraform plan -out=plan.tfplan -no-color 
+                            terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
                             '''
                     )
                 }
@@ -270,12 +257,22 @@ pipeline {
                                aws sts get-caller-identity
                             '''
                     )
+
+                    script {
+                                    // Pause the pipeline and wait for manual input
+                                    def userInput = input(id: 'manual-input', message: 'Proceed with apply ?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+                
+                                    // Check the user input
+                                    if (userInput == 'abort') {
+                                        error('Apply aborted')
+                                    } else {
+                                        echo "User comments: ${userInput}"
+                                    }
+                                }
                     sh(
                     script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
-                            echo "Check current directory"
-                            pwd
+                            echo "Terraform apply"
+                            terraform apply -target="module.vpc" -input=false plan.tfplan
                             '''
                     )
                 }
