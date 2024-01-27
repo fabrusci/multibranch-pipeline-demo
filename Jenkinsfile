@@ -10,6 +10,7 @@ pipeline {
         AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
+        STACK                 = ''
     }
     options {
         buildDiscarder logRotator(
@@ -115,6 +116,7 @@ pipeline {
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    echo "${STACK}
                                     ls -la
                                     pwd
                                     echo "Update asdf"
