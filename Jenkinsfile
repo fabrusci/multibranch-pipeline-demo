@@ -302,6 +302,7 @@ pipeline {
                     sh(
                     script: '''#!/bin/bash
                             echo "Terraform destroy"
+                            terraform state pull
                             terraform destroy -auto-approve -no-color -target="module.vpc"
                             echo "Check current directory"
                             pwd
