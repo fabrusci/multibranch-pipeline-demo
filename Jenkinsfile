@@ -109,12 +109,12 @@ pipeline {
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
             steps {
+                echo "Deploying to ${STACK} environment..."
                 script {
 
                         sh(
                             script: '''#!/bin/bash
                                     set -x
-                                    echo $STACK
                                     ls -la
                                     pwd
                                     echo "Update asdf"
