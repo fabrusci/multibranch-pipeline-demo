@@ -229,7 +229,7 @@ pipeline {
                             set -x
                             terraform state pull
                             echo "Terraform plan"
-                            terraform plan -out=plan.tfplan -no-color 
+                            terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
                             '''
                     )
                 }
