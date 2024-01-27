@@ -6,7 +6,8 @@ pipeline {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
     //  }
     environment {
-        AWS_DEFAULT_REGION    = "eu-central-1"
+        AWS_DEFAULT_REGION    = "${params.AWS_REGION}"
+        AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
     }
@@ -81,6 +82,7 @@ pipeline {
                                 //   ]
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.13', description: 'AWSCLI Version to install'),
+                                string(name: 'AWS_REGION', defaultValue: params.AWS_REGION ? params.AWS_REGION : 'eu-central-1', description: 'AWS region'),
                                 string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
                                 choice (name: 'ACTION',
 				                             choices: [ 'plan', 'apply', 'destroy'],
@@ -135,28 +137,28 @@ pipeline {
             }
         }
 
-        stage('Manual Intervention') {
-
-            when {
-                branch 'feature'
-                beforeAgent true
-            }
-
-            steps {
-                unstash 'pippo'  // unstash 
-                script {
-                    // Pause the pipeline and wait for manual input
-                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-
-                    // Check the user input
-                    if (userInput == 'abort') {
-                        error('Manual intervention aborted the pipeline.')
-                    } else {
-                        echo "User comments: ${userInput}"
-                    }
-                }
-            }
-        }
+        // stage('Manual Intervention') {
+// 
+        //     when {
+        //         branch 'feature'
+        //         beforeAgent true
+        //     }
+// 
+        //     steps {
+        //         unstash 'pippo'  // unstash 
+        //         script {
+        //             // Pause the pipeline and wait for manual input
+        //             def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+// 
+        //             // Check the user input
+        //             if (userInput == 'abort') {
+        //                 error('Manual intervention aborted the pipeline.')
+        //             } else {
+        //                 echo "User comments: ${userInput}"
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Terraform init') {
 
@@ -169,6 +171,7 @@ pipeline {
                 dir('ci') 
                 {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.BRANCH_NAME}-aws-credential"]]) {
+                    unstash 'pippo'  // unstash 
                     sh(
                     script: '''#!/bin/bash
                                echo "Check AWS credential"
@@ -183,12 +186,32 @@ pipeline {
                             pwd
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
+
+                    withEnv(["TF_CLI_ARGS_init=-backend-config='./backend-configs/${BRANCH_NAME}-backend-config.hcl'"]) {
+
+                         script {
+                                    // Pause the pipeline and wait for manual input
+                                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+                
+                                    // Check the user input
+                                    if (userInput == 'abort') {
+                                        error('Manual intervention aborted the pipeline.')
+                                    } else {
+                                        echo "User comments: ${userInput}"
+                                    }
+                                }
+
+
+                          sh(
+                            script: '''#!/bin/bash
+                            set -x
+                            echo $TF_CLI_ARGS_init
                             echo "Terraform init"
-                            # terraform init -backend-config=./backend-config.hcl -no-color --reconfigure
+                            # terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
+                            terraform init -no-color --reconfigure
                             '''
-                    )
+                            )
+                    }
                 }
                   // cleanWs()
                }
@@ -216,10 +239,10 @@ pipeline {
                     )
                     sh(
                     script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
-                            echo "Check current directory"
-                            pwd
+                            set -x
+                            terraform state pull
+                            echo "Terraform plan"
+                            terraform plan -out=plan.tfplan -no-color 
                             '''
                     )
                 }

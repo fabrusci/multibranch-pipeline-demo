@@ -1,0 +1,6 @@
+bucket = "tf-remote-state20240109114127726500000001"
+key    = "terraform.tfstate"
+dynamodb_table = "tf-remote-state-lock"
+region = "eu-central-1"
+encrypt = "true"
+kms_key_id= "arn:aws:kms:eu-central-1:584925994180:key/c254e6c5-fa3c-48ec-bc09-f92b4d1ba103"
