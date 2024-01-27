@@ -41,7 +41,7 @@ data "aws_ecrpublic_authorization_token" "token" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  name   = develop
+  name   = "develop"
   region = "eu-central-1"
 
   vpc_cidr = "10.0.0.0/16"
