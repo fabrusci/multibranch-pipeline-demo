@@ -301,11 +301,10 @@ pipeline {
                     )
                     sh(
                     script: '''#!/bin/bash
-                            echo "Terraform destroy"
+                            echo "Terraform state pull"
                             terraform state pull
+                            echo "Terraform destroy"
                             terraform destroy -auto-approve -no-color -target="module.vpc"
-                            echo "Check current directory"
-                            pwd
                             '''
                     )
                 }
