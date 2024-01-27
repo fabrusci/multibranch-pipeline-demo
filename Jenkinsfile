@@ -244,7 +244,7 @@ pipeline {
                         sh(
                          script: '''#!/bin/bash
                                     set -x
-                                    echo "${STACK}
+                                    echo "${STACK}"
                                     terraform state pull
                                     echo "Terraform plan"
                                     terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
