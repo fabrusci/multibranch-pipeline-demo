@@ -6,7 +6,8 @@ pipeline {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
     //  }
     environment {
-        AWS_DEFAULT_REGION    = "eu-central-1"
+        AWS_DEFAULT_REGION    = "${params.AWS_REGION}"
+        AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
     }
@@ -81,6 +82,7 @@ pipeline {
                                 //   ]
                                 //,
                                 string(name: 'AWSCLI_VERSION', defaultValue: params.AWSCLI_VERSION ? params.AWSCLI_VERSION : '2.15.13', description: 'AWSCLI Version to install'),
+                                string(name: 'AWS_REGION', defaultValue: params.AWS_REGION ? params.AWS_REGION : 'eu-central-1', description: 'AWS region'),
                                 string(name: 'TERRAFORM_VERSION', defaultValue: params.TERRAFORM_VERSION ? params.TERRAFORM_VERSION : '1.4.6', description: 'TERRAFORM Version to install'),
                                 choice (name: 'ACTION',
 				                             choices: [ 'plan', 'apply', 'destroy'],
