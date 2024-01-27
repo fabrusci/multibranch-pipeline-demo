@@ -1,0 +1,3 @@
+variable "stackname" {
+  type = string
+}

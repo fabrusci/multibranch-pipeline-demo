@@ -247,7 +247,7 @@ pipeline {
                                     echo "${STACK}"
                                     terraform state pull
                                     echo "Terraform plan"
-                                    terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
+                                    terraform plan -target="module.vpc" -var 'stackname=${STACK}'-out=plan.tfplan -no-color 
                                   '''
                           )
                     }
@@ -288,12 +288,15 @@ pipeline {
                                         echo "User comments: ${userInput}"
                                     }
                                 }
-                    sh(
-                    script: '''#!/bin/bash
-                            echo "Terraform apply"
-                            terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
+
+                     withEnv(["STACK=${STACK}"])
+                         {    sh(
+                              script: '''#!/bin/bash
+                                         echo "Terraform apply"
+                                         terraform apply -target="module.vpc" -var 'stackname=${STACK}' -input=false -no-color -auto-approve plan.tfplan
                             '''
-                    )
+                            )
+                    }
                 }
                   // cleanWs()
                }
