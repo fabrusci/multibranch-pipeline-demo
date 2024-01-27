@@ -114,6 +114,7 @@ pipeline {
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    echo $STACK
                                     ls -la
                                     pwd
                                     echo "Update asdf"
