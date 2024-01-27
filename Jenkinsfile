@@ -272,7 +272,7 @@ pipeline {
                     sh(
                     script: '''#!/bin/bash
                             echo "Terraform apply"
-                            terraform apply -target="module.vpc" -input=false plan.tfplan
+                            terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
                             '''
                     )
                 }
@@ -301,8 +301,9 @@ pipeline {
                     )
                     sh(
                     script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
+                            echo "Terraform destroy"
+                            terraform state pull
+                            terraform destroy -auto-approve -no-color -target="module.vpc"
                             echo "Check current directory"
                             pwd
                             '''
