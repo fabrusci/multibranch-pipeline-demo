@@ -247,7 +247,7 @@ pipeline {
                                     echo "${STACK}"
                                     terraform state pull
                                     echo "Terraform plan"
-                                    terraform plan -target="module.vpc" -var 'stackname=${STACK}'-out=plan.tfplan -no-color 
+                                    terraform plan -target="module.vpc" -var 'stackname=${STACK}' -out=plan.tfplan -no-color 
                                   '''
                           )
                     }
@@ -326,7 +326,7 @@ pipeline {
                             echo "Terraform state pull"
                             terraform state pull
                             echo "Terraform destroy"
-                            terraform destroy -auto-approve -no-color -target="module.vpc"
+                            terraform destroy -var 'stackname=${STACK}' -auto-approve -no-color -target="module.vpc"
                             '''
                     )
                 }
