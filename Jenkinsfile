@@ -10,6 +10,7 @@ pipeline {
         AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
+        STACK                 = ''
     }
     options {
         buildDiscarder logRotator(
@@ -115,6 +116,7 @@ pipeline {
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    echo "${STACK}"
                                     ls -la
                                     pwd
                                     echo "Update asdf"
@@ -236,14 +238,19 @@ pipeline {
                                aws sts get-caller-identity
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
-                            set -x
-                            terraform state pull
-                            echo "Terraform plan"
-                            terraform plan -target="module.vpc" -out=plan.tfplan -no-color 
-                            '''
-                    )
+                    
+                    withEnv(["STACK=${STACK}"]) 
+                    {
+                        sh(
+                         script: '''#!/bin/bash
+                                    set -x
+                                    echo "${STACK}"
+                                    terraform state pull
+                                    echo "Terraform plan"
+                                    terraform plan -target="module.vpc" -var "stackname=${STACK}" -out=plan.tfplan -no-color 
+                                  '''
+                          )
+                    }
                 }
                   // cleanWs()
                }
@@ -281,12 +288,15 @@ pipeline {
                                         echo "User comments: ${userInput}"
                                     }
                                 }
-                    sh(
-                    script: '''#!/bin/bash
-                            echo "Terraform apply"
-                            terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
+
+                     withEnv(["STACK=${STACK}"])
+                         {    sh(
+                              script: '''#!/bin/bash
+                                         echo "Terraform apply"
+                                         terraform apply -target="module.vpc" -var "stackname=${STACK}" -input=false -no-color -auto-approve plan.tfplan
                             '''
-                    )
+                            )
+                    }
                 }
                   // cleanWs()
                }
@@ -316,7 +326,7 @@ pipeline {
                             echo "Terraform state pull"
                             terraform state pull
                             echo "Terraform destroy"
-                            terraform destroy -auto-approve -no-color -target="module.vpc"
+                            terraform destroy -var "stackname=${STACK}" -auto-approve -no-color -target="module.vpc"
                             '''
                     )
                 }
