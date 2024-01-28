@@ -10,6 +10,7 @@ pipeline {
         AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
+        STACK                 = ''
     }
     options {
         buildDiscarder logRotator(
@@ -89,6 +90,17 @@ pipeline {
 				                             description: 'Run terraform plan / apply / destroy')
                             ])
                         ])
+
+
+                       // Set the STACK variable based on the Git branch
+                            if ( env.BRANCH_NAME == 'feature' || env.BRANCH_NAME == 'develop') {
+                                 STACK = 'dev'
+                                } else if ( env.BRANCH_NAME == 'main') {
+                                STACK = 'prod'
+                               } else {
+                                      echo "Unsupported Git branch: ${env.BRANCH_NAME}"
+                                      error "Unsupported Git branch"
+                                      }
                     }
             }
         }
@@ -98,11 +110,13 @@ pipeline {
             //    name = sh(script:"echo 'ddddd' | cut -d',' -f1",  returnStdout: true).trim()
             //   }
             steps {
+                echo "Deploying to ${STACK} environment..."
                 script {
 
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    echo "${STACK}"
                                     ls -la
                                     pwd
                                     echo "Update asdf"
@@ -189,19 +203,6 @@ pipeline {
 
                     withEnv(["TF_CLI_ARGS_init=-backend-config='./backend-configs/${BRANCH_NAME}-backend-config.hcl'"]) {
 
-                         script {
-                                    // Pause the pipeline and wait for manual input
-                                    def userInput = input(id: 'manual-input', message: 'Proceed with the next stage?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
-                
-                                    // Check the user input
-                                    if (userInput == 'abort') {
-                                        error('Manual intervention aborted the pipeline.')
-                                    } else {
-                                        echo "User comments: ${userInput}"
-                                    }
-                                }
-
-
                           sh(
                             script: '''#!/bin/bash
                             set -x
@@ -237,14 +238,19 @@ pipeline {
                                aws sts get-caller-identity
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
-                            set -x
-                            terraform state pull
-                            echo "Terraform plan"
-                            terraform plan -out=plan.tfplan -no-color 
-                            '''
-                    )
+                    
+                    withEnv(["STACK=${STACK}"]) 
+                    {
+                        sh(
+                         script: '''#!/bin/bash
+                                    set -x
+                                    echo "${STACK}"
+                                    terraform state pull
+                                    echo "Terraform plan"
+                                    terraform plan -target="module.vpc" -var "stackname=${STACK}" -out=plan.tfplan -no-color 
+                                  '''
+                          )
+                    }
                 }
                   // cleanWs()
                }
@@ -270,14 +276,27 @@ pipeline {
                                aws sts get-caller-identity
                             '''
                     )
-                    sh(
-                    script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
-                            echo "Check current directory"
-                            pwd
+
+                    script {
+                                    // Pause the pipeline and wait for manual input
+                                    def userInput = input(id: 'manual-input', message: 'Proceed with apply ?', parameters: [string(defaultValue: '', description: 'Comments', name: 'Comments')])
+                
+                                    // Check the user input
+                                    if (userInput == 'abort') {
+                                        error('Apply aborted')
+                                    } else {
+                                        echo "User comments: ${userInput}"
+                                    }
+                                }
+
+                     withEnv(["STACK=${STACK}"])
+                         {    sh(
+                              script: '''#!/bin/bash
+                                         echo "Terraform apply"
+                                         terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
                             '''
-                    )
+                            )
+                    }
                 }
                   // cleanWs()
                }
@@ -304,10 +323,10 @@ pipeline {
                     )
                     sh(
                     script: '''#!/bin/bash
-                            echo "Check terraform version"
-                            terraform version
-                            echo "Check current directory"
-                            pwd
+                            echo "Terraform state pull"
+                            terraform state pull
+                            echo "Terraform destroy"
+                            terraform destroy -var "stackname=${STACK}" -auto-approve -no-color -target="module.vpc"
                             '''
                     )
                 }
