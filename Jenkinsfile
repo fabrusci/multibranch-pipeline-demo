@@ -293,7 +293,7 @@ pipeline {
                          {    sh(
                               script: '''#!/bin/bash
                                          echo "Terraform apply"
-                                         terraform apply -target="module.vpc" -var "stackname=${STACK}" -input=false -no-color -auto-approve plan.tfplan
+                                         terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
                             '''
                             )
                     }
