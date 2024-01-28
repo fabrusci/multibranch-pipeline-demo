@@ -247,7 +247,7 @@ pipeline {
                                     echo "${STACK}"
                                     terraform state pull
                                     echo "Terraform plan"
-                                    terraform plan -target="module.vpc" -var 'stackname=${STACK}' -out=plan.tfplan -no-color 
+                                    terraform plan -target="module.vpc" -var "stackname=${STACK}" -out=plan.tfplan -no-color 
                                   '''
                           )
                     }
@@ -293,7 +293,7 @@ pipeline {
                          {    sh(
                               script: '''#!/bin/bash
                                          echo "Terraform apply"
-                                         terraform apply -target="module.vpc" -var 'stackname=${STACK}' -input=false -no-color -auto-approve plan.tfplan
+                                         terraform apply -target="module.vpc" -var "stackname=${STACK}" -input=false -no-color -auto-approve plan.tfplan
                             '''
                             )
                     }
@@ -326,7 +326,7 @@ pipeline {
                             echo "Terraform state pull"
                             terraform state pull
                             echo "Terraform destroy"
-                            terraform destroy -var 'stackname=${STACK}' -auto-approve -no-color -target="module.vpc"
+                            terraform destroy -var "stackname=${STACK}" -auto-approve -no-color -target="module.vpc"
                             '''
                     )
                 }
