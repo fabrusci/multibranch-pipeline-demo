@@ -1,6 +1,6 @@
 pipeline {
 
-    agent {label  'macosagent' || 'agent1'}
+    agent {label  ('macosagent' || 'agent1')}
 
     //parameters {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
