@@ -131,6 +131,9 @@ pipeline {
                                     asdf install terraform ${TERRAFORM_VERSION}
                                     asdf local terraform ${TERRAFORM_VERSION}
                                     asdf reshim
+                                    echo "Install AWS SSM Plugin"
+                                    curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+                                    sudo dpkg -i session-manager-plugin.deb
                                     env
                                     '''
                            )
