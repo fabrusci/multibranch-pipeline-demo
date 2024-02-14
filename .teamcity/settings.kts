@@ -31,7 +31,7 @@ version = "2023.11"
 
 project {
 
-    buildType(Build)
+    buildType(Build1)
 
     features {
         awsConnection {
