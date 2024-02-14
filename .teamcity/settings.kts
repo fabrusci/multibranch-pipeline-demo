@@ -4,7 +4,6 @@ import jetbrains.buildServer.configs.kotlin.buildFeatures.provideAwsCredentials
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.projectFeatures.awsConnection
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -31,8 +30,6 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2023.11"
 
 project {
-
-    vcsRoot(HttpsGithubComMkjetbrainsSimpleMavenSampleRefsHeadsMaster)
 
     buildType(Build)
 
@@ -113,11 +110,4 @@ object Build : BuildType({
             awsConnectionId = "AwsAbruscidemo"
         }
     }
-})
-
-object HttpsGithubComMkjetbrainsSimpleMavenSampleRefsHeadsMaster : GitVcsRoot({
-    name = "https://github.com/mkjetbrains/SimpleMavenSample#refs/heads/master"
-    url = "https://github.com/mkjetbrains/SimpleMavenSample"
-    branch = "refs/heads/master"
-    branchSpec = "refs/heads/*"
 })
