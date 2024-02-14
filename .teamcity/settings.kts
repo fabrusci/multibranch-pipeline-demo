@@ -33,6 +33,7 @@ project {
 
     buildType(Build)
     buildType(Dev)
+    buildType(Dev)
 
     features {
         awsConnection {
@@ -126,8 +127,6 @@ object Dev : BuildType({
 
     vcs {
         root(DslContext.settingsRoot)
-
-        branchFilter = "+:develop"
     }
 
     steps {
