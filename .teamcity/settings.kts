@@ -32,6 +32,7 @@ version = "2023.11"
 project {
 
     buildType(Build)
+    buildType(Dev)
 
     features {
         awsConnection {
@@ -64,6 +65,60 @@ project {
 
 object Build : BuildType({
     name = "Build"
+
+    params {
+        text("env.pippo", "pluto", label = "pippo", display = ParameterDisplay.PROMPT, allowEmpty = true)
+    }
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        script {
+            name = "Directory"
+            id = "Directory"
+            scriptContent = """
+                asdf update
+                # env
+                # aws sts get-caller-identity
+                env | grep '^TEAM'
+            """.trimIndent()
+            dockerImage = "fabrusci/ssh-agent:jdk21-asdf"
+            dockerRunParameters = "-u jenkins"
+        }
+        script {
+            name = "Lis paramters"
+            id = "Lis_paramters"
+            scriptContent = """
+                echo "All TeamCity Parameters:"
+                echo "------------------------"
+                echo "%teamcity.agent.home.dir%"
+            """.trimIndent()
+        }
+    }
+
+    triggers {
+        vcs {
+            branchFilter = """
+                +:feature
+                +:<default>
+                +:develop
+            """.trimIndent()
+        }
+    }
+
+    features {
+        perfmon {
+        }
+        provideAwsCredentials {
+            awsConnectionId = "AwsAbruscidemo"
+        }
+    }
+})
+
+object Dev : BuildType({
+    name = "dev"
 
     params {
         text("env.pippo", "pluto", label = "pippo", display = ParameterDisplay.PROMPT, allowEmpty = true)
