@@ -36,7 +36,7 @@ project {
     features {
         awsConnection {
             id = "AmazonWebServicesAwsCloudeotest"
-            name = "Amazon Web Services (AWS) cloudeotest"
+            name = "cloudeotest"
             regionName = "eu-central-1"
             credentialsType = static {
                 accessKeyId = "AKIASV5MM25SGWVCLUWY"
