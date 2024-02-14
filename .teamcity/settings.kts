@@ -4,7 +4,6 @@ import jetbrains.buildServer.configs.kotlin.buildFeatures.provideAwsCredentials
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.projectFeatures.awsConnection
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -32,8 +31,6 @@ version = "2023.11"
 
 project {
 
-    vcsRoot(HttpsGithubComMkjetbrainsSimpleMavenSampleRefsHeadsMaster)
-
     buildType(Build)
 
     features {
@@ -44,6 +41,19 @@ project {
             credentialsType = static {
                 accessKeyId = "AKIAYQMCOLTCMPYCHTFF"
                 secretAccessKey = "zxxb3608879e5ee97eb53c52c3e0ee01960ada0272535656c5095544cd0d9fd9850813f2c40b913c9d6775d03cbe80d301b"
+                stsEndpoint = "https://sts.eu-central-1.amazonaws.com"
+            }
+            allowInSubProjects = true
+            allowInBuilds = true
+        }
+        awsConnection {
+            id = "Cloudeotest"
+            name = "cloudeotest"
+            regionName = "eu-central-1"
+            credentialsType = static {
+                accessKeyId = "AKIASV5MM25SGWVCLUWY"
+                secretAccessKey = "zxx744f33a8644713db70a69dba2f0ebc31a5b4ae3b2657cb3e903d2e441a081e8a76253e06177c4504775d03cbe80d301b"
+                useSessionCredentials = false
                 stsEndpoint = "https://sts.eu-central-1.amazonaws.com"
             }
             allowInSubProjects = true
@@ -100,11 +110,4 @@ object Build : BuildType({
             awsConnectionId = "AwsAbruscidemo"
         }
     }
-})
-
-object HttpsGithubComMkjetbrainsSimpleMavenSampleRefsHeadsMaster : GitVcsRoot({
-    name = "https://github.com/mkjetbrains/SimpleMavenSample#refs/heads/master"
-    url = "https://github.com/mkjetbrains/SimpleMavenSample"
-    branch = "refs/heads/master"
-    branchSpec = "refs/heads/*"
 })
