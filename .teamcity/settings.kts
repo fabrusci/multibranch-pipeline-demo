@@ -49,6 +49,19 @@ project {
             allowInSubProjects = true
             allowInBuilds = true
         }
+        awsConnection {
+            id = "Cloudeotest"
+            name = "cloudeotest"
+            regionName = "eu-central-1"
+            credentialsType = static {
+                accessKeyId = "AKIASV5MM25SGWVCLUWY"
+                secretAccessKey = "zxx744f33a8644713db70a69dba2f0ebc31a5b4ae3b2657cb3e903d2e441a081e8a76253e06177c4504775d03cbe80d301b"
+                useSessionCredentials = false
+                stsEndpoint = "https://sts.eu-central-1.amazonaws.com"
+            }
+            allowInSubProjects = true
+            allowInBuilds = true
+        }
     }
 }
 
