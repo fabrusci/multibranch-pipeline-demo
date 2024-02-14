@@ -126,6 +126,8 @@ object Dev : BuildType({
 
     vcs {
         root(DslContext.settingsRoot)
+
+        branchFilter = "+:develop"
     }
 
     steps {
