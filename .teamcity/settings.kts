@@ -171,4 +171,9 @@ object Dev : BuildType({
             awsConnectionId = "AwsAbruscidemo"
         }
     }
+
+    dependencies {
+        snapshot(Build) {
+        }
+    }
 })
