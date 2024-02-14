@@ -99,7 +99,11 @@ object Build : BuildType({
 
     triggers {
         vcs {
-            branchFilter = "+:feature"
+            branchFilter = """
+                +:feature
+                +:<default>
+                +:develop
+            """.trimIndent()
         }
     }
 
