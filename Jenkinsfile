@@ -1,6 +1,6 @@
 pipeline {
 
-    agent {label  ('macosagent || agent1')}
+    agent {label  ('agent1')}
 
     //parameters {
     //string(name: 'AWSCLI_VERSION', defaultValue: '2.15.4', description: 'AWSCLI Version to install')
@@ -116,20 +116,21 @@ pipeline {
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    source ~/.profile
                                     echo "${STACK}"
                                     ls -la
                                     pwd
-                                    echo "Update asdf"
-                                    asdf update
+                                    echo "asdf version :"
+                                    asdf version
                                     echo "Install awscli plugin"
                                     echo "AWSCLI version : ${AWSCLI_VERSION}"
                                     asdf plugin add awscli
                                     asdf install awscli ${AWSCLI_VERSION}
-                                    asdf local awscli ${AWSCLI_VERSION}
+                                    asdf set -u awscli ${AWSCLI_VERSION}
                                     echo "TERRAFORM version : ${TERRAFORM_VERSION}"
                                     asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
                                     asdf install terraform ${TERRAFORM_VERSION}
-                                    asdf local terraform ${TERRAFORM_VERSION}
+                                    asdf set -u terraform ${TERRAFORM_VERSION}
                                     asdf reshim
                                     echo "Install AWS SSM Plugin"
                                     curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
@@ -143,6 +144,7 @@ pipeline {
                         sh(
                             script: '''#!/bin/bash
                                     set -x
+                                    source ~/.profile
                                     echo " Second script"
                                     touch pippo.txt
                                     pwd
@@ -209,6 +211,7 @@ pipeline {
                           sh(
                             script: '''#!/bin/bash
                             set -x
+                            source ~/.profile
                             echo $TF_CLI_ARGS_init
                             echo "Terraform init"
                             # terraform init -backend-config=./backend-configs/${BRANCH_NAME}-backend-config.hcl -no-color --reconfigure
@@ -237,6 +240,7 @@ pipeline {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
+                               source ~/.profile
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
@@ -247,6 +251,7 @@ pipeline {
                         sh(
                          script: '''#!/bin/bash
                                     set -x
+                                    source ~/.profile
                                     echo "${STACK}"
                                     terraform state pull
                                     echo "Terraform plan"
@@ -275,6 +280,7 @@ pipeline {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
+                               source ~/.profile
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
@@ -295,8 +301,10 @@ pipeline {
                      withEnv(["STACK=${STACK}"])
                          {    sh(
                               script: '''#!/bin/bash
+                                         set -x
+                                         source ~/.profile
                                          echo "Terraform apply"
-                                         terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
+                                         # terraform apply -target="module.vpc" -input=false -no-color -auto-approve plan.tfplan
                             '''
                             )
                     }
@@ -320,16 +328,20 @@ pipeline {
                     sh('env')
                     sh(
                     script: '''#!/bin/bash
+                               set -x
+                               source ~/.profile
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
                     )
                     sh(
                     script: '''#!/bin/bash
+                            set -x
+                            source ~/.profile
                             echo "Terraform state pull"
                             terraform state pull
                             echo "Terraform destroy"
-                            terraform destroy -var "stackname=${STACK}" -auto-approve -no-color -target="module.vpc"
+                            #terraform destroy -var "stackname=${STACK}" -auto-approve -no-color -target="module.vpc"
                             '''
                     )
                 }
