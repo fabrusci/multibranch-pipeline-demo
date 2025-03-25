@@ -193,6 +193,8 @@ pipeline {
                     unstash 'pippo'  // unstash 
                     sh(
                     script: '''#!/bin/bash
+                               set -x
+                               source ~/.profile
                                echo "Check AWS credential"
                                aws sts get-caller-identity
                             '''
