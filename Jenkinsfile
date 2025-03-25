@@ -10,7 +10,7 @@ pipeline {
         AWS_REGION            = "${params.AWS_REGION}"
         ACTION                = "${params.ACTION}"
         TF_IN_AUTOMATION      = 1
-        STACK                 = ''
+        STACK                 = ""
     }
     options {
         buildDiscarder logRotator(
@@ -128,7 +128,7 @@ pipeline {
                                     asdf install awscli ${AWSCLI_VERSION}
                                     asdf set -u awscli ${AWSCLI_VERSION}
                                     echo "TERRAFORM version : ${TERRAFORM_VERSION}"
-                                    asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+                                    asdf plugin add terraform https://github.com/asdf-community/asdf-hashicorp.git
                                     asdf install terraform ${TERRAFORM_VERSION}
                                     asdf set -u terraform ${TERRAFORM_VERSION}
                                     asdf reshim
